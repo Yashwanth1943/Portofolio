@@ -1,0 +1,67 @@
+/* Global Layout */
+.about-page {
+    padding: 80px 20px;
+    max-width: 900px;
+    margin: 0 auto;
+    line-height: 1.8;
+    color: #f1f1f1;
+}
+
+.about-heading {
+    font-size: 30px;
+    margin-bottom: 25px;
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 40px;
+    background: linear-gradient(90deg, #A78BFA, #38BDF8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-transform: uppercase;
+}
+
+.yashwanth-about-text {
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+    text-align: justify;
+}
+
+.section-title {
+    font-size: 1.8rem;
+    margin: 30px 0 15px;
+    color: #4CAF50;
+}
+
+.education-section p,
+.certifications-section p {
+    margin: 12px 0;
+    font-size: 1.1rem;
+}
+
+/* Back Home Link Styling */
+.back-home-link {
+  position: fixed;
+  bottom: 20px;
+  right: 80px;
+
+  padding: 12px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  
+  border: 1px solid rgba(167, 139, 250, 0.2);
+  color: #c4b5fd;
+  font-size: 1.5rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  text-align: center;
+
+  &:hover {
+    border: rgba(167, 139, 250, 0.2);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 10px rgba(167, 139, 250, 0.35);
+  }
+}
+
