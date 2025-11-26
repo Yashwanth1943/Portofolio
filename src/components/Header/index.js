@@ -26,10 +26,7 @@ const Header = () => {
           <NavLink to="/skills" className="nav-link">Skills</NavLink>
           <NavLink to="/certificates" className="nav-link">Certificates</NavLink>
           <NavLink to="/about" className="nav-link">About</NavLink>
-<<<<<<< HEAD
           <NavLink to="/contact" className="nav-link">Let's Connect</NavLink>
-=======
->>>>>>> 87b939ce974c43e162e3ba6ce4f3abe14ae7c355
         </nav>
 
         {/* Hamburger Menu - Visible on mobile only */}
