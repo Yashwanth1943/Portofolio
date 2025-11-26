@@ -1,0 +1,161 @@
+<<<<<<< HEAD
+.about-page {
+  padding: 80px 20px;
+  max-width: 850px;
+  margin: 0 auto;
+  color: #e5e7eb; // soft white
+  line-height: 1.75;
+
+  @media (max-width: 480px) {
+    padding: 60px 16px;
+  }
+}
+
+/* Main Heading */
+.about-heading {
+  font-size: 2.4rem;
+  margin-bottom: 35px;
+  text-align: center;
+  background: linear-gradient(90deg, #A78BFA, #38BDF8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+
+  @media (max-width: 480px) {
+    font-size: 1.9rem;
+  }
+}
+
+/* Intro Paragraph */
+.yashwanth-about-text {
+  font-size: 1.1rem;
+  margin-bottom: 35px;
+  color: #d1d5db; // light gray
+
+  @media (max-width: 480px) {
+    font-size: 0.95rem;
+  }
+}
+
+/* Sub Headings */
+.section-title {
+  font-size: 1.6rem;
+  margin: 30px 0 10px;
+  font-weight: 600;
+  color: #A78BFA; // purple (matches your theme)
+  letter-spacing: 0.5px;
+
+  @media (max-width: 480px) {
+    font-size: 1.3rem;
+  }
+}
+
+/* Inner Text Blocks */
+.info-section p {
+  margin: 10px 0;
+  font-size: 1.05rem;
+  color: #cbd5e1;
+
+  @media (max-width: 480px) {
+    font-size: 0.95rem;
+  }
+}
+
+/* Back Button (Matching Your Portfolio UI) */
+.back-home-link {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+
+  padding: 12px 13px;
+  border-radius: 50%;
+  text-decoration: none;
+  background: rgba(167, 139, 250, 0.12);
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  color: #dcd6ff;
+  font-size: 1.55rem;
+  backdrop-filter: blur(10px);
+  transition: all 0.25s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 12px rgba(167, 139, 250, 0.45);
+    background: rgba(167, 139, 250, 0.22);
+  }
+
+  @media (max-width: 480px) {
+    bottom: 18px;
+    right: 18px;
+    padding: 10px 11px;
+    font-size: 1.3rem;
+  }
+}
+=======
+/* Global Layout */
+.about-page {
+    padding: 80px 20px;
+    max-width: 900px;
+    margin: 0 auto;
+    line-height: 1.8;
+    color: #f1f1f1;
+}
+
+.about-heading {
+    font-size: 30px;
+    margin-bottom: 25px;
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 40px;
+    background: linear-gradient(90deg, #A78BFA, #38BDF8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-transform: uppercase;
+}
+
+.yashwanth-about-text {
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+    text-align: justify;
+}
+
+.section-title {
+    font-size: 1.8rem;
+    margin: 30px 0 15px;
+    color: #4CAF50;
+}
+
+.education-section p,
+.certifications-section p {
+    margin: 12px 0;
+    font-size: 1.1rem;
+}
+
+/* Back Home Link Styling */
+.back-home-link {
+  position: fixed;
+  bottom: 20px;
+  right: 80px;
+
+  padding: 12px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  
+  border: 1px solid rgba(167, 139, 250, 0.2);
+  color: #c4b5fd;
+  font-size: 1.5rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  text-align: center;
+
+  &:hover {
+    border: rgba(167, 139, 250, 0.2);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 10px rgba(167, 139, 250, 0.35);
+  }
+}
+
+>>>>>>> 87b939ce974c43e162e3ba6ce4f3abe14ae7c355
