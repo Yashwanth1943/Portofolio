@@ -1,0 +1,133 @@
+.contact-section {
+  padding: 100px 20px;
+  background: #0d0b1f;
+  color: #fff;
+  text-align: center;
+  min-height: 100vh;
+
+  @media (max-width: 768px) {
+    padding: 70px 15px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 60px 12px;
+  }
+}
+
+.contact-title {
+  font-size: 2rem;
+  background: linear-gradient(90deg, #A78BFA, #38BDF8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 40px;
+
+  @media (max-width: 768px) {
+    font-size: 1.7rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+  }
+}
+
+.contact-form {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-radius: 16px;
+  padding: 40px;
+  max-width: 500px;
+  margin: 0 auto;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+
+  @media (max-width: 768px) {
+    padding: 30px 25px;
+    max-width: 90%;
+  }
+
+  @media (max-width: 480px) {
+    padding: 25px 20px;
+    max-width: 100%;
+    border-radius: 12px;
+  }
+}
+
+.form-group {
+  text-align: left;
+  margin-bottom: 20px;
+
+  label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #cbd5e1;
+
+    @media (max-width: 480px) {
+      font-size: 0.9rem;
+    }
+  }
+
+  input,
+  textarea {
+    width: 93%;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.07);
+    color: #fff;
+    font-size: 1rem;
+    outline: none;
+    resize: none;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      border-color: #A78BFA;
+    }
+
+    &::placeholder {
+      color: #a1a1aa;
+    }
+
+    @media (max-width: 480px) {
+      padding: 10px 12px;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+.submit-btn {
+  display: inline-block;
+  width: 100%;
+  padding: 12px 0;
+  background: linear-gradient(90deg, #A78BFA, #38BDF8);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(56, 189, 248, 0.3);
+  }
+
+  @media (max-width: 480px) {
+    padding: 10px 0;
+    font-size: 0.9rem;
+    border-radius: 8px;
+  }
+}
+
+.status-message {
+  margin-top: 20px;
+  color: #A78BFA;
+  font-weight: 500;
+
+  @media (max-width: 480px) {
+    font-size: 0.9rem;
+  }
+}
