@@ -8,7 +8,10 @@ import First5Seconds from "./components/First5Seconds";
 import Projects from "./components/Projects"; // This component should contain ONLY the projects
 import Skills from "./components/Skills";
 import About from "./components/About";
+<<<<<<< HEAD
 import Contact from "./components/Contact";
+=======
+>>>>>>> 87b939ce974c43e162e3ba6ce4f3abe14ae7c355
 import "./App.scss";
 
 const App = () => {
@@ -34,7 +37,10 @@ const App = () => {
           <Route path="/projects" element={<Projects />} />
           <Route path="/skills" element={<Skills />} />
           <Route path="/about" element={<About />} />
+<<<<<<< HEAD
           <Route path="/contact" element={<Contact />} />
+=======
+>>>>>>> 87b939ce974c43e162e3ba6ce4f3abe14ae7c355
           <Route path="*" element={<Home />} />
         </Routes>
       </div>
