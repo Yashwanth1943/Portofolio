@@ -1,0 +1,99 @@
+/* Skills Section */
+.skills-container {
+    padding: 80px 20px;
+    text-align: center;
+    min-height: 100vh;
+    color: #fff;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    
+}
+
+.skills-title {
+    font-size: 30px;
+    margin-bottom: 40px;
+    background: linear-gradient(90deg, #A78BFA, #38BDF8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.skill-card {
+    background: #09061e;
+    padding: 20px;
+    border: rgb(46, 5, 58) 0.5px solid;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    // Set a min-width to ensure cards don't shrink too much
+    min-width: 250px;
+    // Allow cards to grow
+    flex-grow: 0; 
+    flex-basis: 250px;
+}
+
+.skill-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.08);
+}
+
+.skill-card h3 {
+    font-size: 22px;
+    color: #fff;
+    margin-top: 0;
+}
+
+.skill-card p {
+    font-size: 15px;
+    margin: 10px 0 15px;
+    color: #ccc;
+}
+
+.skill-btn {
+    display: inline-block;
+    background-color: #a899ff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.skill-btn:hover {
+    background-color: #6f5fff;
+} 
+
+// THIS IS THE CORRECTED LAYOUT
+
+.skills-grid{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+    margin: 0 auto;
+
+    .skills-card {
+      padding: 12px 20px;
+      font-size: 1rem;
+      font-weight: 500;
+      color: #e2e8f0;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 30px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: transform 0.3s ease, background 0.3s ease;
+
+      &:hover {
+        transform: translateY(-4px);
+        background: rgba(167, 139, 250, 0.2);
+      }
+    }
+  }
