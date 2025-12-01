@@ -6,7 +6,12 @@ import cors from "cors";
 dotenv.config();
 
 const app = express();
-app.use(cors());
+
+app.use(cors({
+  origin: ["http://localhost:3000", "https://portofolio-neon-six.vercel.app"],
+  methods: ["GET", "POST"]
+}));
+
 app.use(express.json());
 
 // --- MongoDB Connection ---
@@ -14,8 +19,7 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.error("❌ Connection error:", err));
 
-
-// --- Correct Schema (with timestamp in IST) ---
+// --- Schema ---
 const contactSchema = new mongoose.Schema({
   name: String,
   email: String,
@@ -31,12 +35,10 @@ const contactSchema = new mongoose.Schema({
   }
 });
 
-
 const Contact = mongoose.model("Contact", contactSchema);
 
-
-// --- POST Route ---
-app.post("/contact", async (req, res) => {
+// --- POST Route (IMPORTANT!) ---
+app.post("/api/contact", async (req, res) => {
   try {
     const contact = new Contact(req.body);
     await contact.save();
@@ -51,13 +53,13 @@ app.post("/contact", async (req, res) => {
   }
 });
 
-
 // --- Test Route ---
 app.get("/", (req, res) => {
   res.send("API is running...");
 });
 
-
 // --- Server Listen ---
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});

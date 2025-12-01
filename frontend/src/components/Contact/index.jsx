@@ -22,11 +22,12 @@ const Contact = () => {
     setStatus("Sending...");
 
     try {
-      const response = await fetch("http://localhost:5000/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch("https://portofolio-1-1kys.onrender.com/api/contact", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(formData),
+});
+
 
       if (response.ok) {
         setStatus("Message sent successfully ✔️");
