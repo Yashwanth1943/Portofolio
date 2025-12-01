@@ -18,27 +18,34 @@ const Contact = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setStatus("Sending...");
+    e.preventDefault();
+    setStatus("Sending...");
 
-    try {
-      const response = await fetch("https://portofolio-1-1kys.onrender.com/api/contact", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(formData),
-});
+    // This logic checks: Are we on localhost? Use port 5000. 
+    // Otherwise (if deployed), use the Render URL.
+    const API_BASE = window.location.hostname === "localhost" 
+      ? "http://localhost:5000" 
+      : "https://portofolio-1-1kys.onrender.com";
 
+    try {
+      // Updated Fetch URL
+      const response = await fetch(`${API_BASE}/api/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
-      if (response.ok) {
-        setStatus("Message sent successfully ✔️");
-        setFormData({ name: "", email: "", message: "" });
-      } else {
-        setStatus("Something went wrong ❌");
-      }
-    } catch (err) {
-      setStatus("Server error ❌");
-    }
-  };
+      if (response.ok) {
+        setStatus("Message sent successfully ✔️");
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        setStatus("Something went wrong ❌");
+      }
+    } catch (err) {
+      console.error(err); // Log the actual error to console so you can see it
+      setStatus("Server error ❌");
+    }
+  };
 
   return (
     <div className="contact-section">
