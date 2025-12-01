@@ -8,8 +8,15 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: ["http://localhost:3000", "https://portofolio-neon-six.vercel.app"],
-  methods: ["GET", "POST"]
+  origin: [
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "http://localhost:3001",
+    "https://portofolio-neon-six.vercel.app",
+    "https://portofolio-1-1kys.onrender.com"
+],
+  methods: ["GET", "POST", "PUT", "DELETE"], // Added PUT/DELETE just in case you expand later
+  credentials: true // Good to have if you ever send cookies/headers
 }));
 
 app.use(express.json());

@@ -23,9 +23,9 @@ const Contact = () => {
 
     // This logic checks: Are we on localhost? Use port 5000. 
     // Otherwise (if deployed), use the Render URL.
-    const API_BASE = window.location.hostname === "localhost" 
-      ? "http://localhost:5000" 
-      : "https://portofolio-1-1kys.onrender.com";
+    const API_BASE = window.location.hostname === "localhost"
+  ? "http://localhost:5000"
+  : "https://portofolio-1-1kys.onrender.com";
 
     try {
       // Updated Fetch URL
