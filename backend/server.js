@@ -11,12 +11,11 @@ app.use(cors({
   origin: [
     "http://localhost:3000",
     "http://localhost:5173",
-    "http://localhost:3001",
-    "https://portofolio-neon-six.vercel.app",
-    "https://portofolio-1-1kys.onrender.com"
-],
-  methods: ["GET", "POST", "PUT", "DELETE"], // Added PUT/DELETE just in case you expand later
-  credentials: true // Good to have if you ever send cookies/headers
+    "https://portofolio-neon-six.vercel.app",   // your frontend
+    "https://portofolio-1-1kys.onrender.com"    // your backend
+  ],
+  methods: ["GET", "POST"],
+  credentials: true
 }));
 
 app.use(express.json());
