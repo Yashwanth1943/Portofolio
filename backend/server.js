@@ -7,13 +7,20 @@ dotenv.config();
 
 const app = express();
 
+const allowedOrigins = new Set([
+  "http://localhost:3000",
+  "http://localhost:5173",
+  "https://portofolio-neon-six.vercel.app",
+  process.env.FRONTEND_URL
+].filter(Boolean));
+
 app.use(cors({
-  origin: [
-    "http://localhost:3000",
-    "http://localhost:5173",
-    "https://portofolio-neon-six.vercel.app",   // your frontend
-    "https://portofolio-1-1kys.onrender.com"    // your backend
-  ],
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.has(origin) || origin.endsWith(".onrender.com")) {
+      return callback(null, true);
+    }
+    return callback(new Error("Not allowed by CORS"));
+  },
   methods: ["GET", "POST"],
   credentials: true
 }));
