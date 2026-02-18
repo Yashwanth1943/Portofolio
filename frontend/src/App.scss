@@ -1,0 +1,40 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  background: radial-gradient(at top, #1c0d4a, #0a061b, #03000b);
+  cursor: auto  ;
+}
+
+.portfolio-container {
+  width: 100%;
+  min-height: 100vh; /* Ensures full viewport height, no extra space */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background: linear-gradient(to right, #0d0b1f, #12002c);
+}
+
+.home-container {
+  width: 100%;
+  margin: 20px;
+  padding: 60px 20px 0 80px; /* top, right, bottom, left */
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #d8cfff;
+}
+
+.portfolio-container,
+.home-container {
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .home-container {
+    padding-left: 0;
+    padding-top: 60px;
+  }
+}
