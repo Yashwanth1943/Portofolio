@@ -1,16 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
-
 :root {
   --accent: #64b5f6;
   --accent-strong: #42a5f5;
   --text: #e2e8f0;
-}
-
-body {
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background-color: #121212;
-  color: var(--text);
 }
 
 .projects-container {
@@ -20,10 +11,8 @@ body {
 }
 
 .projects-heading {
-  font-size: 30px;
+  font-size: clamp(1.75rem, 3.8vw, 2.25rem);
   text-align: center;
-  margin-bottom: 50px;
-  font-size: 30px;
   margin-bottom: 40px;
   background: linear-gradient(90deg, #A78BFA, #38BDF8);
   -webkit-background-clip: text;
@@ -54,7 +43,7 @@ body {
   display: flex;
   flex-direction: column;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  
+
   &:hover {
     transform: translateY(-8px);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
@@ -67,14 +56,14 @@ body {
 }
 
 .project-title {
-  font-size: 1.5rem;
+  font-size: clamp(1.15rem, 2vw, 1.5rem);
   margin: 0 0 10px;
   font-weight: 600;
   color: var(--accent);
 }
 
 .project-description {
-  font-size: 0.9rem;
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
   color: #ccc;
   line-height: 1.4;
   margin-bottom: 15px;
@@ -91,7 +80,7 @@ body {
   color: #fff;
   padding: 5px 10px;
   border-radius: 5px;
-  font-size: 0.8rem;
+  font-size: clamp(0.78rem, 1vw, 0.9rem);
 }
 
 .project-links {
@@ -139,16 +128,11 @@ body {
   .projects-container {
     padding: 60px 15px;
   }
+
   .projects-heading {
-    font-size: 26px;
     margin-bottom: 30px;
   }
-  .project-title {
-    font-size: 1.25rem;
-  }
-  .project-description {
-    font-size: 0.85rem;
-  }
+
   .project-links {
     flex-direction: column;
     align-items: center;
