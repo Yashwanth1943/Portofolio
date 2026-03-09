@@ -18,7 +18,7 @@
 }
 
 .skills-title {
-    font-size: 30px;
+    font-size: clamp(1.75rem, 3.8vw, 2.25rem);
     margin-bottom: 40px;
     background: linear-gradient(90deg, #A78BFA, #38BDF8);
     -webkit-background-clip: text;
@@ -46,13 +46,13 @@
 }
 
 .skill-card h3 {
-    font-size: 22px;
+    font-size: clamp(1.2rem, 2.2vw, 1.4rem);
     color: #fff;
     margin-top: 0;
 }
 
 .skill-card p {
-    font-size: 15px;
+    font-size: clamp(0.95rem, 1.2vw, 1rem);
     margin: 10px 0 15px;
     color: #ccc;
 }
@@ -85,7 +85,7 @@
 
     .skills-card {
       padding: 12px 20px;
-      font-size: 1rem;
+      font-size: clamp(0.95rem, 1.2vw, 1.05rem);
       font-weight: 500;
       color: #e2e8f0;
       background: rgba(255, 255, 255, 0.05);
