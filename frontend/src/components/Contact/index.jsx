@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "./index.scss";
 
+const REQUEST_TIMEOUT_MS = 12000;
+
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -9,42 +11,56 @@ const Contact = () => {
   });
 
   const [status, setStatus] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
-    setFormData({ 
+    setFormData({
       ...formData,
-      [e.target.name]: e.target.value 
+      [e.target.name]: e.target.value,
     });
   };
 
- const API_BASE =
-  window.location.hostname === "localhost"
-    ? "http://localhost:5000"
-    : "https://portofolio-1-1kys.onrender.com";
+  const API_BASE =
+    window.location.hostname === "localhost"
+      ? "http://localhost:5000"
+      : "https://portofolio-1-1kys.onrender.com";
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setStatus("Sending...");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (isSubmitting) return;
 
-  try {
-    const response = await fetch(`${API_BASE}/api/contact`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
+    setIsSubmitting(true);
+    setStatus("Sending...");
 
-    if (response.ok) {
-      setStatus("Message sent successfully ✔️");
-      setFormData({ name: "", email: "", message: "" });
-    } else {
-      setStatus("Something went wrong ❌");
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+
+    try {
+      const response = await fetch(`${API_BASE}/api/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+        signal: controller.signal,
+      });
+
+      if (response.ok) {
+        setStatus("Message sent successfully.");
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        setStatus("Something went wrong. Please try again.");
+      }
+    } catch (err) {
+      console.error(err);
+      if (err.name === "AbortError") {
+        setStatus("Request timed out. Please try again.");
+      } else {
+        setStatus("Server error. Please try again.");
+      }
+    } finally {
+      clearTimeout(timeoutId);
+      setIsSubmitting(false);
     }
-  } catch (err) {
-    console.error(err);
-    setStatus("Server error ❌");
-  }
-};
-
+  };
 
   return (
     <div className="contact-section">
@@ -86,8 +102,8 @@ const handleSubmit = async (e) => {
           ></textarea>
         </div>
 
-        <button className="submit-btn" type="submit">
-          Send Message
+        <button className="submit-btn" type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Sending..." : "Send Message"}
         </button>
 
         {status && <p className="status-message">{status}</p>}

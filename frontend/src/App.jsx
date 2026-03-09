@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { useState, useEffect, useLayoutEffect } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Home from "./components/Home"; // This component should contain the hero and about sections
 import Certificates from "./components/Certificates";
 import Header from "./components/Header";
@@ -13,11 +13,28 @@ import "./App.scss";
 
 const App = () => {
   const [showSplash, setShowSplash] = useState(true);
+  const location = useLocation();
 
   useEffect(() => {
     const timer = setTimeout(() => setShowSplash(false), 3000);
     return () => clearTimeout(timer);
   }, []);
+
+  useLayoutEffect(() => {
+    const resetScroll = () => {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+
+      const appMain = document.querySelector(".app-main");
+      if (appMain) {
+        appMain.scrollTop = 0;
+      }
+    };
+
+    resetScroll();
+    requestAnimationFrame(resetScroll);
+  }, [location.pathname]);
 
   if (showSplash) {
     return <First5Seconds />;
