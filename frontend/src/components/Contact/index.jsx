@@ -32,7 +32,7 @@ const Contact = () => {
           signal: controller.signal,
         });
 
-        if (res.ok) {
+        if (res.ok || res.status === 404) {
           setServerState("ready");
         } else if (res.status === 503) {
           setServerState("waking");
@@ -65,14 +65,8 @@ const Contact = () => {
     e.preventDefault();
     if (isSubmitting) return;
 
-    if (serverState === "waking") {
-      setStatus("Server is waking up. Please try again in a few seconds.");
-      return;
-    }
-
-    if (serverState === "down") {
-      setStatus("Server unavailable right now. Please try again shortly.");
-      return;
+    if (serverState === "waking" || serverState === "down") {
+      setStatus("Trying to send message...");
     }
 
     setIsSubmitting(true);
@@ -187,3 +181,7 @@ const Contact = () => {
 };
 
 export default Contact;
+
+
+
+
