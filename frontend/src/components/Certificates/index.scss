@@ -152,3 +152,39 @@
     transform: scale(1.1);
   }
 }
+.certificate-pdf {
+  width: 100%;
+  height: 250px;
+  border: 0;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  color: #d4cbff;
+  background: linear-gradient(145deg, #161131, #0f0b24);
+  cursor: pointer;
+}
+
+.modal-pdf {
+  width: min(85vw, 1000px);
+  height: min(80vh, 850px);
+  border: 0;
+  border-radius: 8px;
+}
+
+.pdf-modal-body {
+  display: grid;
+  gap: 14px;
+  color: #fff;
+  text-align: center;
+  min-width: min(80vw, 420px);
+}
+
+.pdf-open-link {
+  display: inline-block;
+  text-decoration: none;
+  background: #a899ff;
+  color: #0f0b24;
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 10px 14px;
+}
