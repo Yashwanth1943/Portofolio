@@ -5,7 +5,19 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const withPublicUrl = (src) => {
+  if (!src || /^https?:\/\//i.test(src)) {
+    return src;
+  }
+
+  return `${process.env.PUBLIC_URL || ""}${src}`;
+};
+
 const certificatesData = [
+  {
+    src: "https://res.cloudinary.com/dn27v5rhi/image/upload/v1773246485/Deloitte_Data_Analytics_Certification_hirxt8.jpg",
+    title: "Deloitte Data Analytics Certification",
+  },
   {
     src: "https://res.cloudinary.com/dn27v5rhi/image/upload/v1755440615/IMFKDOAF37_page-0001_xrrfqt.jpg",
     title: "Industry Ready Certificate",
@@ -47,24 +59,23 @@ const certificatesData = [
 const Certificates = () => {
   const [loadedImages, setLoadedImages] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState("");
+  const [selectedCertificate, setSelectedCertificate] = useState(null);
   const sectionRef = useRef(null);
 
   const handleImageLoad = (index) => {
     setLoadedImages((prev) => [...prev, index]);
   };
 
-  const handleImageClick = (src) => {
-    setSelectedImage(src);
+  const handleCertificateClick = (cert, resolvedSrc) => {
+    setSelectedCertificate({ ...cert, resolvedSrc });
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setSelectedImage("");
+    setSelectedCertificate(null);
   };
 
-  // GSAP Animation
   useEffect(() => {
     const section = sectionRef.current;
 
@@ -101,26 +112,40 @@ const Certificates = () => {
       <h2 className="section-heading">Certificates</h2>
 
       <div className="certificate-list">
-        {certificatesData.map((cert, index) => (
-          <div className="certificate-banner" key={index}>
-            {!loadedImages.includes(index) && (
-              <div className="skeleton-loader"></div>
-            )}
+        {certificatesData.map((cert, index) => {
+          const resolvedSrc = withPublicUrl(cert.src);
 
-            <img
-              src={cert.src}
-              alt={cert.title}
-              className={`certificate-img ${
-                loadedImages.includes(index) ? "visible" : "hidden"
-              }`}
-              onLoad={() => handleImageLoad(index)}
-              onClick={() => handleImageClick(cert.src)}
-            />
-            <div className="certificate-info">
-              <h3>{cert.title}</h3>
+          return (
+            <div className="certificate-banner" key={index}>
+              {!loadedImages.includes(index) && cert.type !== "pdf" && (
+                <div className="skeleton-loader"></div>
+              )}
+
+              {cert.type === "pdf" ? (
+                <button
+                  type="button"
+                  className="certificate-pdf"
+                  onClick={() => handleCertificateClick(cert, resolvedSrc)}
+                >
+                  Open PDF Certificate
+                </button>
+              ) : (
+                <img
+                  src={resolvedSrc}
+                  alt={cert.title}
+                  className={`certificate-img ${
+                    loadedImages.includes(index) ? "visible" : "hidden"
+                  }`}
+                  onLoad={() => handleImageLoad(index)}
+                  onClick={() => handleCertificateClick(cert, resolvedSrc)}
+                />
+              )}
+              <div className="certificate-info">
+                <h3>{cert.title}</h3>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {isModalOpen && (
@@ -129,11 +154,25 @@ const Certificates = () => {
             <button className="modal-close-btn" onClick={handleCloseModal}>
               &times;
             </button>
-            <img
-              src={selectedImage}
-              alt="Full-size Certificate"
-              className="modal-image"
-            />
+            {selectedCertificate?.type === "pdf" ? (
+              <div className="pdf-modal-body">
+                <p>{selectedCertificate.title}</p>
+                <a
+                  href={selectedCertificate.resolvedSrc}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="pdf-open-link"
+                >
+                  Open certificate in new tab
+                </a>
+              </div>
+            ) : (
+              <img
+                src={selectedCertificate?.resolvedSrc}
+                alt="Full-size Certificate"
+                className="modal-image"
+              />
+            )}
           </div>
         </div>
       )}
