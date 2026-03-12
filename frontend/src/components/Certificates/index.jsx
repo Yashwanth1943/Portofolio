@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from "react";
+import { NavLink } from "react-router-dom";
+import { HiMiniHome } from "react-icons/hi2";
 import "./index.scss";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -14,6 +16,10 @@ const withPublicUrl = (src) => {
 };
 
 const certificatesData = [
+  {
+    src: "https://res.cloudinary.com/dn27v5rhi/image/upload/v1773319718/Skyscanner_Certificate_page-0001_xufd2r.jpg",
+    title: "Skyscanner Software Engineering Job Simulation Certificate",
+  },
   {
     src: "https://res.cloudinary.com/dn27v5rhi/image/upload/v1773246485/Deloitte_Data_Analytics_Certification_hirxt8.jpg",
     title: "Deloitte Data Analytics Certification",
@@ -80,7 +86,7 @@ const Certificates = () => {
     const section = sectionRef.current;
 
     const ctx = gsap.context(() => {
-      gsap.from(section.querySelector(".section-heading"), {
+      gsap.from(section.querySelector(".certificate-heading"), {
         opacity: 0,
         y: 30,
         duration: 0.9,
@@ -109,7 +115,7 @@ const Certificates = () => {
 
   return (
     <section className="certificate-section" ref={sectionRef}>
-      <h2 className="section-heading">Certificates</h2>
+      <h2 className="certificate-heading">Certificates</h2>
 
       <div className="certificate-list">
         {certificatesData.map((cert, index) => {
@@ -176,6 +182,10 @@ const Certificates = () => {
           </div>
         </div>
       )}
+
+      <NavLink to="/" className="back-home-link" aria-label="Back to home">
+        <HiMiniHome />
+      </NavLink>
     </section>
   );
 };

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./index.scss";
+import { NavLink } from "react-router-dom";
+import { HiMiniHome } from "react-icons/hi2";
 
 const REQUEST_TIMEOUT_MS = 12000;
 const HEALTH_TIMEOUT_MS = 8000;
@@ -176,6 +178,10 @@ const Contact = () => {
 
         {status && <p className="status-message">{status}</p>}
       </form>
+
+      <NavLink to="/" className="back-home-link" aria-label="Back to home">
+        <HiMiniHome />
+      </NavLink>
     </div>
   );
 };

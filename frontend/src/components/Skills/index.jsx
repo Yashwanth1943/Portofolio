@@ -2,6 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './index.scss';
+import { NavLink } from 'react-router-dom';
+import { HiMiniHome } from 'react-icons/hi2';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,6 +15,7 @@ const skills = [
   { name: "Express.js", desc: "A minimalist web framework for Node.js.", link: "https://expressjs.com/" },
   { name: "MongoDB", desc: "A NoSQL database storing flexible JSON-like documents.", link: "https://www.mongodb.com/" },
   { name: "SQLite", desc: "A lightweight, serverless database engine.", link: "https://www.sqlite.org/" },
+  { name: "Tailwind CSS", desc: "Utility-first CSS framework for rapid UI development.", link: "https://tailwindcss.com/" },
   { name: "HTML", desc: "The standard markup language for web pages.", link: "https://developer.mozilla.org/en-US/docs/Web/HTML" },
   { name: "CSS", desc: "Used for styling and designing web pages.", link: "https://developer.mozilla.org/en-US/docs/Web/CSS" },
   { name: "SCSS", desc: "CSS preprocessor for cleaner styling.", link: "https://sass-lang.com/" },
@@ -75,6 +78,10 @@ const Skills = () => {
           ))}
         </div>
       </div>
+
+      <NavLink to="/" className="back-home-link" aria-label="Back to home">
+        <HiMiniHome />
+      </NavLink>
     </div>
   );
 };

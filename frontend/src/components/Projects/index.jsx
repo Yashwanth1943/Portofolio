@@ -2,6 +2,8 @@ import React, { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./index.scss";
+import { NavLink } from "react-router-dom";
+import { HiMiniHome } from "react-icons/hi2";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -9,6 +11,31 @@ export default function Projects() {
   const projectsRef = useRef(null);
 
   const projects = [
+    {
+      id: "portfolio-website",
+      title: "Personal Portfolio Website",
+      desc: "A responsive portfolio website built with React, showcasing projects, skills, and contact information with smooth animations.",
+      tech: ["React", "GSAP", "CSS"],
+      demo: "https://yashwanth-portfolio.vercel.app/",
+      code: "https://github.com/Yashwanth1943/Portofolio.git",
+    },
+    {
+      id: "expense-tracker",
+      title: "Expense Tracker App",
+      desc: "A user-friendly expense tracker with features to add, edit, and delete expenses, along with data visualization.",
+      tech: ["React", "LocalStorage", "CSS"],
+      demo: "https://yash-expense-tracker.ccbp.tech/",
+      code: "https://github.com/Yashwanth1943/bellcorp-expense-tracker-frontend.git"
+    },
+    {
+      id: "todo-app",
+      title: "Todo Application",
+      desc: "Built a simple Todo Manager using Codex with full CRUD functionality to add, update, and delete tasks. Used localStorage for persistent storage and explored how Codex can assist in faster and more efficient development.",
+      tech: ["Codex","React", "LocalStorage", "CSS"],
+      demo: "https://todo-three-cyan-30.vercel.app/",
+      code: "https://github.com/Yashwanth1943/todo.git"
+
+    },
     {
       id: "nirog-gyan",
       title: "Nirog Gyan - Health Information Platform",
@@ -146,6 +173,10 @@ export default function Projects() {
           </div>
         ))}
       </div>
+
+      <NavLink to="/" className="back-home-link" aria-label="Back to home">
+        <HiMiniHome />
+      </NavLink>
     </div>
   );
 }
