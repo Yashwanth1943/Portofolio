@@ -87,7 +87,12 @@ const HomePage = () => {
           <div className="hero-layout">
             <div className="hero-copy">
               <p className="hero-kicker">FULL-STACK DEVELOPER</p>
-              <h1 className="hero-heading">Hai, I&apos;m Yashwanth.</h1>
+
+              <h1 className="hero-heading" aria-label="Hi, I'm Yashwanth">
+                <span className="hero-heading-prefix">Hi, I&apos;m</span>
+                <span className="hero-heading-name">Yashwanth</span>
+              </h1>
+
               <p className="hero-subtitle">
                 I build clean, fast, and user-friendly web applications with a
                 strong focus on performance, responsiveness, and maintainable architecture.
@@ -166,5 +171,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-
-

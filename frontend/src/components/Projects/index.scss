@@ -14,11 +14,34 @@
   font-size: clamp(1.75rem, 3.8vw, 2.25rem);
   text-align: center;
   margin-bottom: 40px;
-  background: linear-gradient(90deg, #A78BFA, #38BDF8);
+  
+   background: linear-gradient(
+    270deg,
+    #a78bfa,
+    #38bdf8,
+    #c084fc,
+  );
+
+  background-size: 400% 400%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-transform: uppercase;
+  animation: gradientMove 6s ease infinite;
+
+  @media (max-width: 480px) {
+    font-size: 1.9rem;
+  }
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .projects-list {

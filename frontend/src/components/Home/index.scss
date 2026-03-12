@@ -50,10 +50,20 @@
 
 .hero-heading {
   margin: 0;
-  font-size: clamp(1.95rem, 4.4vw, 3.1rem);
-  line-height: 1.12;
-  font-weight: 800;
-  color: #f8fafc;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.2em;
+  font-size: clamp(1.5rem, 3.2vw, 2.45rem);
+  line-height: 1.15;
+  font-weight: 700;
+  color: #eef2ff;
+  letter-spacing: -0.01em;
+}
+
+.hero-heading-prefix,
+.hero-heading-name {
+  color: inherit;
 }
 
 .hero-subtitle {
