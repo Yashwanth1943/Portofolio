@@ -46,6 +46,8 @@ const About = () => {
 
       <h2 className="section-title fade-section">Achievements & Certifications</h2>
       <div className="info-section fade-section">
+        <p>✅ Skyscanner Software Engineering Job Simulation Certificate</p>
+        <p>✅ Deloitte Data Analytics Certification</p>
         <p>✅ Industry-Ready Certification (Nxtwave)</p>
         <p>✅ Web Development & React.js Certification</p>
         <p>✅ Python & SQL Certification</p>
