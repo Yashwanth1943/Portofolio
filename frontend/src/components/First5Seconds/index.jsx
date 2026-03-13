@@ -1,72 +1,65 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import CustomCursor from "../CustomCursor";
+import TextLine from "./TextLine";
 import "./index.scss";
 
-// Utility function to split text and handle spacing correctly
-const splitText = (selector) => {
-  const elements = document.querySelectorAll(selector);
-  elements.forEach((element) => {
-    element.innerHTML = element.textContent
-      .split("")
-      .map((letter) => {
-        return letter === " " ? "<span>&nbsp;</span>" : `<span>${letter}</span>`;
-      })
-      .join("");
-  });
+const lineAnimation = {
+  opacity: 0,
+  y: 20,
+  rotationX: -90,
+  duration: 0.6,
+  stagger: 0.05,
+  ease: "back.out(1.7)",
 };
 
-const AnimatedWelcome = () => {
+const getCharacters = (lineRef) => lineRef.current?.querySelectorAll(".char") || [];
+
+const First5Seconds = () => {
   const containerRef = useRef(null);
+  const firstLineRef = useRef(null);
+  const secondLineRef = useRef(null);
+  const thirdLineRef = useRef(null);
 
   useEffect(() => {
-    let ctx = gsap.context(() => {
-      // Split the text of each item before starting the animation
-      splitText(".item");
+    const root = containerRef.current;
+
+    if (!root) {
+      return undefined;
+    }
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    const ctx = gsap.context(() => {
+      if (prefersReducedMotion) {
+        gsap.set(".char", { opacity: 1, y: 0, rotationX: 0 });
+        return;
+      }
 
       const tl = gsap.timeline();
 
-      // Animate the first phrase
-      tl.from(".first span", {
-        opacity: 0,
-        y: 20,
-        rotationX: -90,
-        duration: 0.6,
-        stagger: 0.05,
-        ease: "back.out(1.7)",
-      });
-
-      // Animate the second phrase, starting 0.2 seconds before the previous one ends
-      tl.from(".second span", {
-        opacity: 0,
-        y: 20,
-        rotationX: -90,
-        duration: 0.6,
-        stagger: 0.05,
-        ease: "back.out(1.7)",
-      }, "-=0.2");
-
-      // Animate the third phrase, starting 0.1 seconds after the previous one starts
-      tl.from(".third span", {
-        opacity: 0,
-        y: 20,
-        rotationX: -90,
-        duration: 0.6,
-        stagger: 0.05,
-        ease: "back.out(1.7)",
-      }, "<0.1");
-      
-    }, containerRef);
+      tl.from(getCharacters(firstLineRef), lineAnimation)
+        .from(getCharacters(secondLineRef), lineAnimation, "-=0.2")
+        .from(getCharacters(thirdLineRef), lineAnimation, "<0.1");
+    }, root);
 
     return () => ctx.revert();
   }, []);
 
   return (
     <div className="container" ref={containerRef}>
-      <div className="item first">Hai</div>
-      <div className="item second"> I'm Yashwanth,</div>
-      <div className="item third">A Full Stack Developer.</div>
+      <CustomCursor />
+      <TextLine ref={firstLineRef} className="first" text="Hai" />
+      <TextLine ref={secondLineRef} className="second" text="I'm Yashwanth," />
+      <TextLine
+        ref={thirdLineRef}
+        className="third"
+        text="A Full Stack Developer."
+      />
     </div>
   );
 };
 
-export default AnimatedWelcome;
+export default First5Seconds;
