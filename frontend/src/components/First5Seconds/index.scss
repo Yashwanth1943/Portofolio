@@ -1,50 +1,130 @@
-/* Container for centering content */
 .container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
   width: 100vw;
-  text-align: center; 
-  color: #E2E8F0;
+  padding: clamp(18px, 4vw, 28px);
+  text-align: center;
+  color: #e2e8f0;
+  background: linear-gradient(
+    120deg,
+    #050112 0%,
+    #14043b 22%,
+    #1f0b63 44%,
+    #0a2a68 68%,
+    #2a0d54 100%
+  );
+  background-size: 240% 240%;
+  animation: first5secondsGradientFlow 12s ease-in-out infinite;
 
-  /* Styles for individual items, nested inside container */
   .item {
-    font-size: 2rem;
-    margin: 10px;
-    line-height: 1.2;
+    margin: clamp(4px, 1vw, 10px);
+    line-height: 1.18;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-shadow: 0 10px 28px rgba(15, 23, 42, 0.28);
+    transform-style: preserve-3d;
 
-    span {
+    .char {
       display: inline-block;
+      will-change: transform, opacity;
     }
   }
 
-  /* --- Media Queries nested inside their respective selectors --- */
+  .first {
+    font-size: clamp(2.25rem, 6.8vw, 4.5rem);
+    color: #ffffff;
+  }
 
-  /* For screens smaller than 768px (tablets and mobile) */
+  .second {
+    font-size: clamp(1.8rem, 5.6vw, 3.55rem);
+    color: #dbeafe;
+  }
+
+  .third {
+    font-size: clamp(1rem, 2.3vw, 1.42rem);
+    color: #93c5fd;
+    letter-spacing: 0.01em;
+    max-width: 28ch;
+  }
+
+  @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+    .second .char {
+      background: linear-gradient(135deg, #ffffff 0%, #d8b4fe 48%, #7dd3fc 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .third .char {
+      background: linear-gradient(135deg, #7dd3fc 0%, #93c5fd 55%, #c4b5fd 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+
   @media (max-width: 768px) {
-    height: auto;
-    min-height: 100vh;
     padding: 20px;
-    box-sizing: border-box;
 
     .item {
-      font-size: 2.5rem;
-      margin: 8px;
+      margin: 6px;
+    }
+
+    .first {
+      font-size: clamp(2rem, 9vw, 3.45rem);
+    }
+
+    .second {
+      font-size: clamp(1.55rem, 7.3vw, 2.8rem);
+    }
+
+    .third {
+      font-size: clamp(0.96rem, 3.6vw, 1.22rem);
     }
   }
 
-  /* For screens smaller than 480px (mobile phones) */
   @media (max-width: 480px) {
-    height: auto;
-    min-height: 100vh;
-    padding: 20px;
-    box-sizing: border-box;
+    padding: 16px;
 
     .item {
-      font-size: 1.8rem;
-      margin: 5px;
+      margin: 4px;
     }
+
+    .first {
+      font-size: clamp(1.85rem, 10.8vw, 2.75rem);
+    }
+
+    .second {
+      font-size: clamp(1.35rem, 8.2vw, 2.15rem);
+    }
+
+    .third {
+      font-size: clamp(0.88rem, 4.3vw, 1.04rem);
+      line-height: 1.42;
+    }
+  }
+}
+
+@keyframes first5secondsGradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .container {
+    animation: none;
+    background-position: 50% 50%;
   }
 }
