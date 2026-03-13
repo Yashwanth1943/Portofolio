@@ -3,8 +3,8 @@ import "./index.scss";
 import { NavLink } from "react-router-dom";
 import { HiMiniHome } from "react-icons/hi2";
 
-const REQUEST_TIMEOUT_MS = 12000;
-const HEALTH_TIMEOUT_MS = 8000;
+const REQUEST_TIMEOUT_MS = 25000;
+const HEALTH_TIMEOUT_MS = 15000;
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -17,11 +17,13 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [serverState, setServerState] = useState("checking");
 
-  const API_BASE =
+  const API_BASE = (
     process.env.REACT_APP_API_BASE ||
+    process.env.REACT_APP_API_URL ||
     (window.location.hostname === "localhost"
       ? "http://localhost:5000"
-      : "https://portofolio-1-1kys.onrender.com");
+      : "https://portofolio-1-1kys.onrender.com")
+  ).replace(/\/+$/, "");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -36,7 +38,7 @@ const Contact = () => {
 
         if (res.ok || res.status === 404) {
           setServerState("ready");
-        } else if (res.status === 503) {
+        } else if (res.status === 503 || res.status === 502) {
           setServerState("waking");
         } else {
           setServerState("down");
@@ -112,7 +114,7 @@ const Contact = () => {
       console.error(err);
       setServerState("down");
       if (err.name === "AbortError") {
-        setStatus("Request timed out. Please try again.");
+        setStatus("Server is taking longer than expected. Please try again shortly.");
       } else if (err instanceof TypeError) {
         setStatus("Unable to reach server. Check your connection and try again.");
       } else {
