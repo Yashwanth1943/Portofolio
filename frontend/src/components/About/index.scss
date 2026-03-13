@@ -81,32 +81,3 @@
   }
 }
 
-/* Back Button (Matching Your Portfolio UI) */
-.back-home-link {
-  position: fixed;
-  bottom: 22px;
-  right: 22px;
-
-  padding: 12px 13px;
-  border-radius: 50%;
-  text-decoration: none;
-  background: rgba(167, 139, 250, 0.12);
-  border: 1px solid rgba(167, 139, 250, 0.3);
-  color: #dcd6ff;
-  font-size: 1.55rem;
-  backdrop-filter: blur(10px);
-  transition: all 0.25s ease;
-
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 0 12px rgba(167, 139, 250, 0.45);
-    background: rgba(167, 139, 250, 0.22);
-  }
-
-  @media (max-width: 480px) {
-    bottom: 18px;
-    right: 18px;
-    padding: 10px 11px;
-    font-size: 1.3rem;
-  }
-}
