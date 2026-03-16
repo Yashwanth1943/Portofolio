@@ -1,11 +1,15 @@
 .cursor-ring,
 .cursor-dot {
+  --cursor-x: -100px;
+  --cursor-y: -100px;
+  --cursor-scale: 1;
+
   position: fixed;
   top: 0;
   left: 0;
   pointer-events: none;
   z-index: 2000;
-  transform: translate3d(-100px, -100px, 0);
+  transform: translate3d(var(--cursor-x), var(--cursor-y), 0) scale(var(--cursor-scale));
   mix-blend-mode: screen;
 }
 
@@ -13,11 +17,32 @@
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  border: 1px solid rgba(167, 139, 250, 0.7);
+  border: 1px solid transparent;
+  background: radial-gradient(circle at center, rgba(11, 17, 34, 0.75), rgba(11, 17, 34, 0.25));
   box-shadow: 0 0 18px rgba(56, 189, 248, 0.35);
   margin-left: -17px;
   margin-top: -17px;
+  isolation: isolate;
   transition: transform 0.15s ease, opacity 0.2s ease;
+}
+
+.cursor-ring::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  padding: 1px;
+  background: conic-gradient(
+    from 0deg,
+    #a78bfa 0deg,
+    #38bdf8 115deg,
+    #22d3ee 225deg,
+    #a78bfa 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
 }
 
 .cursor-dot {
@@ -27,15 +52,75 @@
   background: linear-gradient(90deg, #a78bfa, #38bdf8);
   margin-left: -4px;
   margin-top: -4px;
-  transition: transform 0.12s ease;
+  isolation: isolate;
+  transition: transform 0.12s ease, filter 0.2s ease, opacity 0.16s ease;
+}
+
+.cursor-dot::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  padding: 1px;
+  opacity: 0;
+  background: conic-gradient(
+    from 0deg,
+    #a78bfa 0deg,
+    #38bdf8 110deg,
+    #22d3ee 210deg,
+    #a78bfa 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  transition: opacity 0.18s ease;
 }
 
 .cursor-ring.is-active {
-  transform: translate3d(-100px, -100px, 0) scale(0.82);
+  --cursor-scale: 0.82;
+}
+
+.cursor-ring.is-hovered {
+  --cursor-scale: 1.16;
+  box-shadow: 0 0 24px rgba(56, 189, 248, 0.45);
+}
+
+.cursor-ring.is-hovered::before {
+  animation: ringBorderSpin 1.1s linear infinite;
 }
 
 .cursor-dot.is-active {
-  transform: translate3d(-100px, -100px, 0) scale(1.4);
+  --cursor-scale: 1.4;
+}
+
+.cursor-dot.is-hovered {
+  opacity: 1;
+  filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.45));
+}
+
+.cursor-dot.is-hovered::before {
+  opacity: 0;
+  animation: none;
+}
+
+@keyframes dotBorderSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ringBorderSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor-ring.is-hovered::before,
+  .cursor-dot.is-hovered::before {
+    animation: none;
+  }
 }
 
 html.custom-cursor-enabled,

@@ -1,69 +1,78 @@
-import React, { useEffect, useRef } from 'react';
-import "./index.scss";
-import { NavLink } from 'react-router-dom';
+import React from "react";
+import { NavLink } from "react-router-dom";
 import { HiMiniHome } from "react-icons/hi2";
-import { gsap } from "gsap";
+import "./index.scss";
+
+const education = [
+  "BSc in Computer Science, Ravulapalem (2021-2024)",
+  "MPC, Siddartha Junior College (2019-2021)",
+  "ZP High School (2019)",
+];
+
+const certifications = [
+  "Skyscanner Software Engineering Job Simulation Certificate",
+  "Deloitte Data Analytics Certification",
+  "Industry-Ready Certification (Nxtwave)",
+  "Web Development and React.js Certification",
+  "Python and SQL Certification",
+];
+
+const interests = [
+  "Skilled in React, Node.js, Express.js, MongoDB, and SQLite",
+  "Always learning and exploring new technologies",
+  "Interested in building practical real-world applications",
+];
 
 const About = () => {
-  const aboutRef = useRef(null);
-
-  useEffect(() => {
-    const section = aboutRef.current;
-
-    // GSAP Context (strict mode safe)
-    const ctx = gsap.context(() => {
-      gsap.from(section.querySelectorAll(".fade-section"), {
-        opacity: 0,
-        y: 20,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: "power2.out",
-      });
-    }, aboutRef);
-
-    return () => ctx.revert();  // Clean & safe cleanup
-  }, []);
-
   return (
-    <div className="about-page" ref={aboutRef}>
-      
-      <h1 className="about-heading fade-section">About Me</h1>
+    <section className="about-page fade-up">
+      <div className="about-shell">
+        <header className="about-intro">
+          <h1 className="about-heading">About Me</h1>
+          <p className="about-text">
+            I&apos;m <strong>Yashwanth</strong>, a passionate <strong>Full Stack Developer</strong>
+            who loves building scalable, modern, and visually appealing web
+            applications. I work with technologies like <strong>React, Node.js, MongoDB,</strong>
+            <strong> SQLite,</strong> and <strong>Python</strong> to create clean,
+            functional, and efficient solutions.
+          </p>
+        </header>
 
-      <p className="yashwanth-about-text fade-section">
-        I’m <strong>Yashwanth</strong>, a passionate{" "}
-        <strong>Full Stack Developer</strong> who loves building scalable, modern,
-        and visually appealing web applications.  
-        I work with technologies like <strong>React, Node.js, MongoDB, SQLite,</strong>  
-        and <strong>Python</strong> to create clean, functional, and efficient solutions.
-      </p>
+        <section className="about-block">
+          <h2 className="section-title">Education</h2>
+          <ul className="about-list" aria-label="Education">
+            {education.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </section>
 
-      <h2 className="section-title fade-section">Education</h2>
-      <div className="info-section fade-section">
-        <p>🎓 <strong>BSc in Computer Science</strong>, Ravulapalem (2021–2024)</p>
-        <p>🏫 <strong>MPC</strong>, Siddartha Junior College (2019–2021)</p>
-        <p>📘 <strong>ZP High School</strong> (2019)</p>
+        <section className="about-block">
+          <h2 className="section-title">Achievements and Certifications</h2>
+          <ul className="about-list" aria-label="Certifications">
+            {certifications.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </section>
+
+        <section className="about-block">
+          <h2 className="section-title">Skills and Interests</h2>
+          <ul className="about-list" aria-label="Skills and interests">
+            {interests.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </section>
+      </div>
+      <div className="signature-wrapper">
+        <p className="signature">Yashwanth K..</p>
       </div>
 
-      <h2 className="section-title fade-section">Achievements & Certifications</h2>
-      <div className="info-section fade-section">
-        <p>✅ Skyscanner Software Engineering Job Simulation Certificate</p>
-        <p>✅ Deloitte Data Analytics Certification</p>
-        <p>✅ Industry-Ready Certification (Nxtwave)</p>
-        <p>✅ Web Development & React.js Certification</p>
-        <p>✅ Python & SQL Certification</p>
-      </div>
-
-      <h2 className="section-title fade-section">Skills & Interests</h2>
-      <div className="info-section fade-section">
-        <p>💡 Skilled in <strong>React, Node.js, Express.js, MongoDB, SQLite</strong></p>
-        <p>🌱 Always learning & exploring new technologies</p>
-        <p>🚀 Interested in creating impactful real-world apps</p>
-      </div>
-
-      <NavLink to="/" className="back-home-link">
+      <NavLink to="/" className="back-home-link" aria-label="Back to home">
         <HiMiniHome />
       </NavLink>
-    </div>
+    </section>
   );
 };
 

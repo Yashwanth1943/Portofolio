@@ -16,7 +16,7 @@ export default function Projects() {
       title: "Personal Portfolio Website",
       desc: "A responsive portfolio website built with React, showcasing projects, skills, and contact information with smooth animations.",
       tech: ["React", "GSAP", "CSS"],
-      demo: "https://yashwanth-portfolio.vercel.app/",
+      demo: "https://portofolio-neon-six.vercel.app",
       code: "https://github.com/Yashwanth1943/Portofolio.git",
     },
     {
@@ -24,7 +24,7 @@ export default function Projects() {
       title: "Expense Tracker App",
       desc: "A user-friendly expense tracker with features to add, edit, and delete expenses, along with data visualization.",
       tech: ["React", "LocalStorage", "CSS"],
-      demo: "https://yash-expense-tracker.ccbp.tech/",
+      demo: "https://bellcorp-expense-tracker-frontend.vercel.app/",
       code: "https://github.com/Yashwanth1943/bellcorp-expense-tracker-frontend.git"
     },
     {
