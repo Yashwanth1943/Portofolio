@@ -4,7 +4,6 @@ import { FaLinkedin, FaGithub } from "react-icons/fa";
 import { HiOutlineChevronDoubleUp } from "react-icons/hi2";
 
 const Footer = ({ scrollToSection }) => {
-  const currentYear = new Date().getFullYear();
 
   return (
     <footer className="footer-container">
