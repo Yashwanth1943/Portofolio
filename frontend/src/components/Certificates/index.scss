@@ -1,7 +1,7 @@
 /* Certificates Section */
 .certificate-section {
   text-align: center;
-  padding: 100px 100px;
+  padding: 100px clamp(16px, 6vw, 100px);
 }
 
 
@@ -45,11 +45,154 @@
   }
 }
 
-.certificate-list {
+.certificate-carousel-wrapper {
+  position: relative;
+  width: 100%;
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.certificate-carousel-viewport {
+  overflow-x: auto;
+  width: 100%;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  cursor: grab;
+  will-change: scroll-position;
+  user-select: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &.dragging {
+    cursor: grabbing;
+    scroll-snap-type: none;
+    scroll-behavior: auto;
+  }
+}
+
+.certificate-carousel-track {
+  display: flex;
+  padding: 24px 0;
+}
+
+.certificate-card-wrapper {
+  display: flex;
   justify-content: center;
-  gap: 25px;
+  height: 100%;
+  scroll-snap-align: start;
+  margin-right: -15px;
+  position: relative;
+  transition: z-index 0.3s ease;
+
+  &:hover {
+    z-index: 100 !important;
+
+    & > div {
+      transform: scale(1.06) rotate(0deg) translateY(-10px) !important;
+      transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+    }
+
+    .certificate-banner {
+      box-shadow: 0 16px 32px rgba(167, 139, 250, 0.25) !important;
+      border-color: rgba(167, 139, 250, 0.5) !important;
+    }
+  }
+
+  & > div {
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(13, 8, 30, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #fff;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+  user-select: none;
+  line-height: 1;
+
+  &:hover:not(:disabled) {
+    background: rgba(167, 139, 250, 0.25);
+    border-color: rgba(167, 139, 250, 0.5);
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  &:disabled {
+    opacity: 0.25;
+    cursor: not-allowed;
+  }
+
+  &.prev {
+    left: -24px;
+    padding-right: 4px;
+  }
+
+  &.next {
+    right: -24px;
+    padding-left: 4px;
+  }
+
+  @media (max-width: 768px) {
+    width: 40px;
+    height: 40px;
+    font-size: 1.6rem;
+    
+    &.prev {
+      left: -10px;
+    }
+    
+    &.next {
+      right: -10px;
+    }
+  }
+}
+
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 30px;
+}
+
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.5);
+  }
+
+  &.active {
+    width: 24px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #a78bfa, #38bdf8);
+    box-shadow: 0 0 8px rgba(167, 139, 250, 0.5);
+  }
 }
 
 .certificate-banner {
@@ -59,22 +202,20 @@
   cursor: pointer;
   will-change: transform;
   transition: transform 0.22s ease;
+  width: 100%;
 
-  // Adjusted for responsiveness
-  flex: 1 1 350px;
-  max-width: 450px;
-
-  // Modern styling
   background: rgba(4, 3, 16, 0.5);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(167, 139, 250, 0.2);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
   transform: scale(1) translateY(0);
 }
 
 .certificate-banner:hover {
   transform: scale(1.02) translateY(-4px);
+  border-color: rgba(167, 139, 250, 0.5);
+  box-shadow: 0 10px 28px rgba(167, 139, 250, 0.2);
 }
 
 .certificate-img {
@@ -127,15 +268,9 @@
     margin-bottom: 18px;
   }
 
-  .certificate-list {
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-  }
-
   .certificate-banner {
-    width: min(100%, 330px);
-    max-width: 330px;
+    width: 100%;
+    max-width: 100%;
     flex: 1 1 auto;
   }
 

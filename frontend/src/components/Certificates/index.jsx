@@ -1,9 +1,8 @@
 import { useState, useEffect, useRef } from "react";
-import { NavLink } from "react-router-dom";
-import { HiMiniHome } from "react-icons/hi2";
-import "./index.scss";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import useDragScroll from "../../hooks/useDragScroll";
+import "./index.scss";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -62,15 +61,61 @@ const certificatesData = [
   },
 ];
 
+const CertificateCard = ({ cert, handleCertificateClick }) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const resolvedSrc = withPublicUrl(cert.src);
+
+  return (
+    <div className="certificate-banner">
+      {!isLoaded && cert.type !== "pdf" && (
+        <div className="skeleton-loader"></div>
+      )}
+
+      {cert.type === "pdf" ? (
+        <button
+          type="button"
+          className="certificate-pdf"
+          onClick={() => handleCertificateClick(cert, resolvedSrc)}
+        >
+          Open PDF Certificate
+        </button>
+      ) : (
+        <img
+          src={resolvedSrc}
+          alt={cert.title}
+          className={`certificate-img ${isLoaded ? "visible" : "hidden"}`}
+          onLoad={() => setIsLoaded(true)}
+          onClick={() => handleCertificateClick(cert, resolvedSrc)}
+          loading="lazy"
+        />
+      )}
+      <div className="certificate-info">
+        <h3>{cert.title}</h3>
+      </div>
+    </div>
+  );
+};
+
+const rotations = [-2.5, 1.8, -1.2, 2.2, -1.8, 1.5];
+const yOffsets = [4, -2, 2, -4, 0, -3];
+
 const Certificates = () => {
-  const [loadedImages, setLoadedImages] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCertificate, setSelectedCertificate] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 1200
+  );
   const sectionRef = useRef(null);
+  const viewportRef = useRef(null);
 
-  const handleImageLoad = (index) => {
-    setLoadedImages((prev) => [...prev, index]);
-  };
+  useDragScroll(viewportRef);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleCertificateClick = (cert, resolvedSrc) => {
     setSelectedCertificate({ ...cert, resolvedSrc });
@@ -80,6 +125,54 @@ const Certificates = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedCertificate(null);
+  };
+
+  let visibleCount = 3;
+  if (windowWidth < 640) {
+    visibleCount = 1;
+  } else if (windowWidth < 1024) {
+    visibleCount = 2;
+  }
+
+  const maxIndex = Math.max(0, certificatesData.length - visibleCount);
+
+  const handleScroll = () => {
+    const el = viewportRef.current;
+    if (!el) return;
+    const cardWidth = el.scrollWidth / certificatesData.length;
+    const index = Math.round(el.scrollLeft / cardWidth);
+    setCurrentIndex(Math.min(maxIndex, index));
+  };
+
+  const handlePrev = () => {
+    const el = viewportRef.current;
+    if (!el) return;
+    const cardWidth = el.scrollWidth / certificatesData.length;
+    el.scrollTo({
+      left: el.scrollLeft - cardWidth,
+      behavior: "smooth",
+    });
+  };
+
+  const handleNext = () => {
+    const el = viewportRef.current;
+    if (!el) return;
+    const cardWidth = el.scrollWidth / certificatesData.length;
+    el.scrollTo({
+      left: el.scrollLeft + cardWidth,
+      behavior: "smooth",
+    });
+  };
+
+  const handleDotClick = (idx) => {
+    const el = viewportRef.current;
+    if (!el) return;
+    const cardWidth = el.scrollWidth / certificatesData.length;
+    el.scrollTo({
+      left: idx * cardWidth,
+      behavior: "smooth",
+    });
+    setCurrentIndex(idx);
   };
 
   useEffect(() => {
@@ -115,43 +208,71 @@ const Certificates = () => {
 
   return (
     <section className="certificate-section" ref={sectionRef}>
-      <h2 className="certificate-heading">Certificates</h2>
+      <h1 className="certificate-heading">Certificates</h1>
 
-      <div className="certificate-list">
-        {certificatesData.map((cert, index) => {
-          const resolvedSrc = withPublicUrl(cert.src);
+      <div className="certificate-carousel-wrapper">
+        <button
+          className="carousel-btn prev"
+          onClick={handlePrev}
+          disabled={currentIndex === 0}
+          aria-label="Previous Certificate"
+        >
+          &#8249;
+        </button>
 
-          return (
-            <div className="certificate-banner" key={index}>
-              {!loadedImages.includes(index) && cert.type !== "pdf" && (
-                <div className="skeleton-loader"></div>
-              )}
-
-              {cert.type === "pdf" ? (
-                <button
-                  type="button"
-                  className="certificate-pdf"
-                  onClick={() => handleCertificateClick(cert, resolvedSrc)}
+        <div
+          className="certificate-carousel-viewport"
+          ref={viewportRef}
+          onScroll={handleScroll}
+        >
+          <div className="certificate-carousel-track">
+            {certificatesData.map((cert, index) => (
+              <div
+                key={index}
+                className="certificate-card-wrapper"
+                style={{
+                  flex: `0 0 ${100 / visibleCount}%`,
+                  padding: "0 12px",
+                  zIndex: certificatesData.length - index,
+                }}
+              >
+                <div
+                  style={{
+                    transform: `rotate(${rotations[index % rotations.length]}deg) translateY(${yOffsets[index % yOffsets.length]}px)`,
+                    transformOrigin: "center center",
+                    width: "100%",
+                    height: "100%",
+                  }}
                 >
-                  Open PDF Certificate
-                </button>
-              ) : (
-                <img
-                  src={resolvedSrc}
-                  alt={cert.title}
-                  className={`certificate-img ${
-                    loadedImages.includes(index) ? "visible" : "hidden"
-                  }`}
-                  onLoad={() => handleImageLoad(index)}
-                  onClick={() => handleCertificateClick(cert, resolvedSrc)}
-                />
-              )}
-              <div className="certificate-info">
-                <h3>{cert.title}</h3>
+                  <CertificateCard
+                    cert={cert}
+                    handleCertificateClick={handleCertificateClick}
+                  />
+                </div>
               </div>
-            </div>
-          );
-        })}
+            ))}
+          </div>
+        </div>
+
+        <button
+          className="carousel-btn next"
+          onClick={handleNext}
+          disabled={currentIndex >= maxIndex}
+          aria-label="Next Certificate"
+        >
+          &#8250;
+        </button>
+      </div>
+
+      <div className="carousel-dots">
+        {Array.from({ length: maxIndex + 1 }).map((_, idx) => (
+          <button
+            key={idx}
+            className={`carousel-dot ${currentIndex === idx ? "active" : ""}`}
+            onClick={() => handleDotClick(idx)}
+            aria-label={`Go to slide ${idx + 1}`}
+          />
+        ))}
       </div>
 
       {isModalOpen && (
@@ -183,9 +304,6 @@ const Certificates = () => {
         </div>
       )}
 
-      <NavLink to="/" className="back-home-link" aria-label="Back to home">
-        <HiMiniHome />
-      </NavLink>
     </section>
   );
 };

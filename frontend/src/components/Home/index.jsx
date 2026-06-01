@@ -10,21 +10,18 @@ const HomePage = () => {
   const [photoLoaded, setPhotoLoaded] = useState(true);
   const heroRef = useRef(null);
   const heroPhotoRef = useRef(null);
-  const aboutRef = useRef(null);
-  const techRef = useRef(null);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (prefersReducedMotion) {
-      gsap.set([heroRef.current, aboutRef.current, techRef.current], { opacity: 1 });
+      gsap.set(heroRef.current, { opacity: 1 });
       return;
     }
 
     const ctx = gsap.context(() => {
       gsap.from(heroRef.current, {
         opacity: 0,
-        y: 30,
         duration: 1,
         ease: 'power3.out',
       });
@@ -32,49 +29,10 @@ const HomePage = () => {
       gsap.from(heroPhotoRef.current, {
         opacity: 0,
         scale: 0.92,
-        y: 20,
         duration: 1,
         delay: 0.2,
         ease: 'power3.out',
       });
-
-      gsap.from(aboutRef.current, {
-        opacity: 0,
-        y: 50,
-        duration: 1.2,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: aboutRef.current,
-          start: 'top 85%',
-        },
-      });
-
-      const techSection = techRef.current;
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: techSection,
-          start: 'top 85%',
-        },
-      });
-
-      tl.from(techSection.querySelector('.section-heading'), {
-        opacity: 0,
-        y: 30,
-        duration: 0.8,
-        ease: 'power3.out',
-      });
-
-      tl.from(
-        techSection.querySelectorAll('.chip'),
-        {
-          opacity: 0,
-          y: 20,
-          stagger: 0.08,
-          duration: 0.5,
-          ease: 'power2.out',
-        },
-        '-=0.2'
-      );
     });
 
     return () => ctx.revert();
@@ -105,8 +63,14 @@ const HomePage = () => {
               </ul>
 
               <div className="hero-buttons">
-                <NavLink className="btn" to="/contact">Get in Touch</NavLink>
-                <NavLink className="btn" to="/projects">View My Work</NavLink>
+                <NavLink className="btn btn-primary" to="/contact" onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+                }}>Get in Touch</NavLink>
+                <NavLink className="btn btn-secondary" to="/projects" onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
+                }}>View My Work</NavLink>
               </div>
             </div>
 
@@ -118,7 +82,7 @@ const HomePage = () => {
               {photoLoaded ? (
                 <img
                   className="hero-photo"
-                  src="/profile.jpg"
+                  src={process.env.PUBLIC_URL + "/profile.jpg"}
                   alt="Yashwanth portrait"
                   width="800"
                   height="800"
@@ -132,37 +96,6 @@ const HomePage = () => {
                 <div className="hero-photo-fallback" aria-hidden="true">YS</div>
               )}
             </figure>
-          </div>
-        </section>
-
-        <section ref={aboutRef} className="about-section">
-          <div className="content-card">
-            <h2 className="section-heading">About Me</h2>
-            <p className="about-text">
-              I specialize in both front-end and back-end development,
-              creating seamless and efficient digital experiences. My focus
-              is on writing clean, reusable code and solving complex problems
-              with practical, high-quality solutions.
-            </p>
-          </div>
-        </section>
-
-        <section ref={techRef} className="tech-section">
-          <div className="content-card">
-            <h2 className="section-heading">Tech Stack</h2>
-            <ul className="tech-stack">
-              <li className="chip">Python</li>
-              <li className="chip">JavaScript</li>
-              <li className="chip">React</li>
-              <li className="chip">Node.js</li>
-              <li className="chip">Express.js</li>
-              <li className="chip">MongoDB</li>
-              <li className="chip">SQLite</li>
-              <li className="chip">HTML5</li>
-              <li className="chip">CSS3</li>
-              <li className="chip">Git</li>
-              <li className="chip">Tailwind CSS</li>
-            </ul>
           </div>
         </section>
       </div>

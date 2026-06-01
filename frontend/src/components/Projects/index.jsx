@@ -1,14 +1,29 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import useDragScroll from "../../hooks/useDragScroll";
 import "./index.scss";
-import { NavLink } from "react-router-dom";
-import { HiMiniHome } from "react-icons/hi2";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const rotations = [-2.5, 1.8, -1.2, 2.2, -1.8, 1.5];
+const yOffsets = [4, -2, 2, -4, 0, -3];
+
 export default function Projects() {
   const projectsRef = useRef(null);
+  const viewportRef = useRef(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 1200
+  );
+
+  useDragScroll(viewportRef);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const projects = [
     {
@@ -28,13 +43,12 @@ export default function Projects() {
       code: "https://github.com/Yashwanth1943/bellcorp-expense-tracker-frontend.git"
     },
     {
-      id: "todo-app",
+      id: "todo-app-codex",
       title: "Todo Application",
       desc: "Built a simple Todo Manager using Codex with full CRUD functionality to add, update, and delete tasks. Used localStorage for persistent storage and explored how Codex can assist in faster and more efficient development.",
       tech: ["Codex","React", "LocalStorage", "CSS"],
       demo: "https://todo-three-cyan-30.vercel.app/",
       code: "https://github.com/Yashwanth1943/todo.git"
-
     },
     {
       id: "nirog-gyan",
@@ -61,7 +75,7 @@ export default function Projects() {
       code: "https://github.com/Yashwanth1943/Nxt-Trendz.git",
     },
     {
-      id: "todo-app",
+      id: "todo-app-enhanced",
       title: "Todo Application",
       desc: "A simple and efficient todo manager with CRUD operations and persistent storage.",
       tech: ["React", "LocalStorage", "CSS"],
@@ -94,7 +108,54 @@ export default function Projects() {
     },
   ];
 
-  // ---------- SAFE GSAP ANIMATION ----------
+  let visibleCount = 3;
+  if (windowWidth < 640) {
+    visibleCount = 1;
+  } else if (windowWidth < 1024) {
+    visibleCount = 2;
+  }
+
+  const maxIndex = Math.max(0, projects.length - visibleCount);
+
+  const handleScroll = () => {
+    const el = viewportRef.current;
+    if (!el) return;
+    const cardWidth = el.scrollWidth / projects.length;
+    const index = Math.round(el.scrollLeft / cardWidth);
+    setCurrentIndex(Math.min(maxIndex, index));
+  };
+
+  const handlePrev = () => {
+    const el = viewportRef.current;
+    if (!el) return;
+    const cardWidth = el.scrollWidth / projects.length;
+    el.scrollTo({
+      left: el.scrollLeft - cardWidth,
+      behavior: "smooth",
+    });
+  };
+
+  const handleNext = () => {
+    const el = viewportRef.current;
+    if (!el) return;
+    const cardWidth = el.scrollWidth / projects.length;
+    el.scrollTo({
+      left: el.scrollLeft + cardWidth,
+      behavior: "smooth",
+    });
+  };
+
+  const handleDotClick = (idx) => {
+    const el = viewportRef.current;
+    if (!el) return;
+    const cardWidth = el.scrollWidth / projects.length;
+    el.scrollTo({
+      left: idx * cardWidth,
+      behavior: "smooth",
+    });
+    setCurrentIndex(idx);
+  };
+
   useEffect(() => {
     const section = projectsRef.current;
 
@@ -114,11 +175,11 @@ export default function Projects() {
       });
 
       tl.from(
-        section.querySelectorAll(".project-card-wrapper"),
+        section.querySelectorAll(".project-card"),
         {
           opacity: 0,
           y: 20,
-          stagger: 0.12,
+          stagger: 0.1,
           duration: 0.5,
           ease: "power2.out",
         },
@@ -126,57 +187,106 @@ export default function Projects() {
       );
     }, projectsRef);
 
-    return () => ctx.revert(); // strict-mode safe cleanup
+    return () => ctx.revert();
   }, []);
 
   return (
     <div className="projects-container" ref={projectsRef}>
       <h1 className="projects-heading">My Work</h1>
 
-      <div className="projects-list">
-        {projects.map((p) => (
-          <div key={p.id} className="project-card-wrapper">
-            <div className="project-card">
-              <div className="project-content">
-                <h2 className="project-title">{p.title}</h2>
-                <p className="project-description">{p.desc}</p>
+      <div className="projects-carousel-wrapper">
+        <button
+          className="carousel-btn prev"
+          onClick={handlePrev}
+          disabled={currentIndex === 0}
+          aria-label="Previous Project"
+        >
+          &#8249;
+        </button>
 
-                <div className="project-tech">
-                  {p.tech.map((t, idx) => (
-                    <span key={idx} className="project-tech-item">
-                      {t}
-                    </span>
-                  ))}
+        <div
+          className="projects-carousel-viewport"
+          ref={viewportRef}
+          onScroll={handleScroll}
+        >
+          <div className="projects-carousel-track">
+            {projects.map((p, index) => (
+              <div
+                key={p.id}
+                className="project-card-wrapper"
+                style={{
+                  flex: `0 0 ${100 / visibleCount}%`,
+                  padding: '0 12px',
+                  zIndex: projects.length - index,
+                }}
+              >
+                <div 
+                  className="project-card"
+                  style={{
+                    transform: `rotate(${rotations[index % rotations.length]}deg) translateY(${yOffsets[index % yOffsets.length]}px)`,
+                    transformOrigin: "center center",
+                  }}
+                >
+                  <div className={`project-banner banner-${p.id}`} />
+                  
+                  <div className="project-content">
+                    <h2 className="project-title">{p.title}</h2>
+                    <p className="project-description">{p.desc}</p>
+
+                    <div className="project-tech">
+                      {p.tech.map((t, idx) => (
+                        <span key={idx} className="project-tech-item">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="project-links">
+                    <a
+                      href={p.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="project-link"
+                    >
+                      Live Demo
+                    </a>
+
+                    <a
+                      href={p.code}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="project-link secondary"
+                    >
+                      Code
+                    </a>
+                  </div>
                 </div>
               </div>
-
-              <div className="project-links">
-                <a
-                  href={p.demo}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="project-link"
-                >
-                  Live Demo
-                </a>
-
-                <a
-                  href={p.code}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="project-link secondary"
-                >
-                  Code
-                </a>
-              </div>
-            </div>
+            ))}
           </div>
-        ))}
+        </div>
+
+        <button
+          className="carousel-btn next"
+          onClick={handleNext}
+          disabled={currentIndex >= maxIndex}
+          aria-label="Next Project"
+        >
+          &#8250;
+        </button>
       </div>
 
-      <NavLink to="/" className="back-home-link" aria-label="Back to home">
-        <HiMiniHome />
-      </NavLink>
+      <div className="carousel-dots">
+        {Array.from({ length: maxIndex + 1 }).map((_, idx) => (
+          <button
+            key={idx}
+            className={`carousel-dot ${currentIndex === idx ? 'active' : ''}`}
+            onClick={() => handleDotClick(idx)}
+            aria-label={`Go to slide ${idx + 1}`}
+          />
+        ))}
+      </div>
     </div>
   );
 }

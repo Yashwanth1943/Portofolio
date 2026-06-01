@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./index.scss";
-import { NavLink } from "react-router-dom";
-import { HiMiniHome } from "react-icons/hi2";
 
 const REQUEST_TIMEOUT_MS = 25000;
 const HEALTH_TIMEOUT_MS = 15000;
@@ -132,8 +130,9 @@ const Contact = () => {
 
       <form className="contact-form" onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Your Name</label>
+          <label htmlFor="contact-name">Your Name</label>
           <input
+            id="contact-name"
             type="text"
             name="name"
             placeholder="Enter your name..."
@@ -144,8 +143,9 @@ const Contact = () => {
         </div>
 
         <div className="form-group">
-          <label>Your Email</label>
+          <label htmlFor="contact-email">Your Email</label>
           <input
+            id="contact-email"
             type="email"
             name="email"
             placeholder="Enter your email..."
@@ -156,8 +156,9 @@ const Contact = () => {
         </div>
 
         <div className="form-group">
-          <label>Your Message</label>
+          <label htmlFor="contact-message">Your Message</label>
           <textarea
+            id="contact-message"
             name="message"
             rows="4"
             placeholder="Tell me how I can help..."
@@ -170,26 +171,16 @@ const Contact = () => {
           {isSubmitting ? "Sending..." : "Send Message"}
         </button>
 
-        {serverState === "checking" && (
+        {status ? (
+          <p className="status-message">{status}</p>
+        ) : serverState === "checking" ? (
           <p className="status-message">Checking server status...</p>
-        )}
-
-        {serverState === "waking" && (
+        ) : serverState === "waking" ? (
           <p className="status-message">Server is waking up. Please wait a moment.</p>
-        )}
-
-        {status && <p className="status-message">{status}</p>}
+        ) : null}
       </form>
-
-      <NavLink to="/" className="back-home-link" aria-label="Back to home">
-        <HiMiniHome />
-      </NavLink>
     </div>
   );
 };
 
 export default Contact;
-
-
-
-

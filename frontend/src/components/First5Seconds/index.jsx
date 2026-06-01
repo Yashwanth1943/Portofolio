@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import CustomCursor from "../CustomCursor";
 import TextLine from "./TextLine";
 import "./index.scss";
 
@@ -42,7 +41,9 @@ const First5Seconds = () => {
 
       tl.from(getCharacters(firstLineRef), lineAnimation)
         .from(getCharacters(secondLineRef), lineAnimation, "-=0.2")
-        .from(getCharacters(thirdLineRef), lineAnimation, "<0.1");
+        .from(getCharacters(thirdLineRef), lineAnimation, "<0.1")
+        .fromTo(".loader-bar", { width: "0%" }, { width: "100%", duration: 1.8, ease: "power2.inOut" }, "-=0.2")
+        .to(root, { opacity: 0, duration: 0.4, ease: "power2.out" });
     }, root);
 
     return () => ctx.revert();
@@ -50,7 +51,6 @@ const First5Seconds = () => {
 
   return (
     <div className="container" ref={containerRef}>
-      <CustomCursor />
       <TextLine ref={firstLineRef} className="first" text="Hai" />
       <TextLine ref={secondLineRef} className="second" text="I'm Yashwanth," />
       <TextLine
@@ -58,6 +58,9 @@ const First5Seconds = () => {
         className="third"
         text="A Full Stack Developer."
       />
+      <div className="loader-container">
+        <div className="loader-bar" />
+      </div>
     </div>
   );
 };

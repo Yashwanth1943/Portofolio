@@ -1,9 +1,9 @@
 import "./index.scss";
-import { NavLink } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const Header = () => {
+const Header = ({ activeSection, scrollToSection }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -13,42 +13,87 @@ const Header = () => {
     setIsMobileMenuOpen(false);
   };
 
+  const handleNavClick = (sectionId) => {
+    scrollToSection(sectionId);
+    closeMobileMenu();
+  };
+
+  const handleBrandClick = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    closeMobileMenu();
+  };
+
+  // Scroll listener to toggle glassmorphic header style
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 40) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        closeMobileMenu();
+      }
+    };
+
+    if (isMobileMenuOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isMobileMenuOpen]);
+
   return (
     <>
-      <header className="header-container">
-        <div>
-          <NavLink to="/" className="brand-text">Yashwanth</NavLink>
+      <header className={`header-container ${scrolled ? 'scrolled' : ''}`}>
+        {/* Brand Personal Logo */}
+        <div className="brand-wrapper">
+          <button onClick={handleBrandClick} className="brand-btn" aria-label="Brand Logo">
+            Yashwanth
+          </button>
         </div>
-        {/* Desktop Navigation Links */}
-        <nav className="right-side-container"> 
-          <NavLink to="/" className="nav-link">Home</NavLink>
-          <NavLink to="/projects" className="nav-link">Projects</NavLink>
-          <NavLink to="/skills" className="nav-link">Skills</NavLink>
-          <NavLink to="/certificates" className="nav-link">Certificates</NavLink>
-          <NavLink to="/about" className="nav-link">About</NavLink>
-          <NavLink to="/contact" className="nav-link">Let's Connect</NavLink>
-        </nav>
 
         {/* Hamburger Menu - Visible on mobile only */}
-        <div 
+        <button 
           className={`hamburger ${isMobileMenuOpen ? 'active' : ''}`}
           onClick={toggleMobileMenu}
+          aria-label="Toggle navigation menu"
+          aria-expanded={isMobileMenuOpen}
+          type="button"
         >
           <span className="bar"></span>
           <span className="bar"></span>
           <span className="bar"></span>
-        </div>
+        </button>
       </header>
 
-      {/* Mobile Navigation */}
-      <div className={`mobile-nav ${isMobileMenuOpen ? 'active' : ''}`}>
-        <NavLink to="/" className="nav-link" onClick={closeMobileMenu}>Home</NavLink>
-        <NavLink to="/projects" className="nav-link" onClick={closeMobileMenu}>Projects</NavLink>
-        <NavLink to="/skills" className="nav-link" onClick={closeMobileMenu}>Skills</NavLink>
-        <NavLink to="/certificates" className="nav-link" onClick={closeMobileMenu}>Certificates</NavLink>
-        <NavLink to="/about" className="nav-link" onClick={closeMobileMenu}>About</NavLink>
-        <NavLink to="/contact" className="nav-link" onClick={closeMobileMenu}>Let's Connect</NavLink>
-      </div>
+      {/* Backdrop overlay for closing menu */}
+      <div 
+        className={`mobile-nav-overlay ${isMobileMenuOpen ? 'active' : ''}`} 
+        onClick={closeMobileMenu}
+        aria-hidden="true"
+      />
+
+      {/* Mobile Navigation Drawer */}
+      <nav className={`mobile-nav ${isMobileMenuOpen ? 'active' : ''}`} aria-label="Mobile navigation">
+        <button onClick={() => handleNavClick("hero")} className={`nav-link ${activeSection === 'hero' ? 'active' : ''}`}>Home</button>
+        <button onClick={() => handleNavClick("about")} className={`nav-link ${activeSection === 'about' ? 'active' : ''}`}>About</button>
+        <button onClick={() => handleNavClick("skills")} className={`nav-link ${activeSection === 'skills' ? 'active' : ''}`}>Skills</button>
+        <button onClick={() => handleNavClick("education")} className={`nav-link ${activeSection === 'education' ? 'active' : ''}`}>Education</button>
+        <button onClick={() => handleNavClick("projects")} className={`nav-link ${activeSection === 'projects' ? 'active' : ''}`}>Projects</button>
+        <button onClick={() => handleNavClick("certifications")} className={`nav-link ${activeSection === 'certifications' ? 'active' : ''}`}>Certificates</button>
+        <button onClick={() => handleNavClick("achievements")} className={`nav-link ${activeSection === 'achievements' ? 'active' : ''}`}>Achievements</button>
+        <button onClick={() => handleNavClick("contact")} className={`nav-link ${activeSection === 'contact' ? 'active' : ''}`}>Let's Connect</button>
+      </nav>
     </>
   );
 };

@@ -1,12 +1,11 @@
 .about-page {
-  padding: 80px 20px;
+  padding: 0;
   max-width: 850px;
   margin: 0 auto;
   color: #e5e7eb; // soft white
   line-height: 1.75;
 
   @media (max-width: 480px) {
-    padding: 60px 16px;
   }
 }
 
@@ -25,7 +24,7 @@
     270deg,
     #a78bfa,
     #38bdf8,
-    #c084fc,
+    #c084fc
   );
 
   background-size: 400% 400%;
@@ -104,6 +103,59 @@
 }
 
 .signature:hover {
-  color: #a78bfa; // lighter purple on hover
+  color: #a78bfa;
   transition: color 0.3s ease;
+}
+
+/* Resume Button Styling */
+.resume-btn {
+  margin-top: 24px;
+  padding: 12px 28px;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: clamp(0.9rem, 1.3vw, 1.02rem);
+  cursor: pointer;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(90deg, #6a11cb, #2575fc, #6a11cb);
+  background-size: 200% 100%;
+  background-position: 0% 0%;
+  box-shadow: 0 4px 14px rgba(37, 117, 252, 0.25);
+  transition: background-position 0.4s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.resume-btn:hover {
+  background-position: 100% 0%;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(37, 117, 252, 0.45);
+}
+
+/* Custom Bullet List Styling */
+.about-list {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 32px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  li {
+    position: relative;
+    padding-left: 28px;
+    font-size: clamp(0.92rem, 1.1vw, 1.05rem);
+    color: #cbd5e1;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 6px;
+      top: 10px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #a78bfa, #38bdf8);
+      box-shadow: 0 0 8px rgba(167, 139, 250, 0.8);
+    }
+  }
 }

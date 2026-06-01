@@ -1,3 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+
 html,
 body {
   margin: 0;
@@ -5,7 +9,13 @@ body {
   width: 100%;
   min-height: 100%;
   overflow-x: hidden;
-  background: radial-gradient(at top, #1c0d4a, #0a061b, #03000b);
+  background-color: #020008;
+  background: 
+    radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.18) 0%, transparent 40%),
+    radial-gradient(circle at 85% 45%, rgba(168, 85, 247, 0.15) 0%, transparent 45%),
+    radial-gradient(circle at 20% 75%, rgba(56, 189, 248, 0.15) 0%, transparent 45%),
+    radial-gradient(circle at 80% 85%, rgba(236, 72, 153, 0.12) 0%, transparent 40%),
+    radial-gradient(at top, #14083a, #060412, #020008) fixed;
 }
 
 * {
@@ -15,6 +25,20 @@ body {
 .app-container {
   width: 100%;
   min-height: 100vh;
+}
+
+
+
+section[id] {
+  scroll-margin-top: clamp(80px, 8vw, 105px);
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: clamp(32px, 4vw, 56px) clamp(16px, 4vw, 32px);
+
+  @media (max-width: 768px) {
+    padding: clamp(16px, 3vw, 32px) clamp(12px, 3vw, 20px);
+  }
 }
 
 .app-main {
@@ -94,5 +118,70 @@ body {
     width: 46px;
     height: 46px;
     font-size: 1.3rem;
+  }
+}
+
+.energy-glow {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(120px);
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.14;
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+
+.blob-1 {
+  top: -10%;
+  left: -10%;
+  width: 50vw;
+  height: 50vw;
+  background: radial-gradient(circle, rgba(129, 140, 248, 0.8), rgba(167, 139, 250, 0));
+  animation: floatGlow1 25s ease-in-out infinite alternate;
+}
+
+.blob-2 {
+  bottom: 10%;
+  right: -10%;
+  width: 60vw;
+  height: 60vw;
+  background: radial-gradient(circle, rgba(236, 72, 153, 0.8), rgba(244, 63, 94, 0));
+  animation: floatGlow2 30s ease-in-out infinite alternate;
+}
+
+.blob-3 {
+  top: 40%;
+  left: 60%;
+  width: 45vw;
+  height: 45vw;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.8), rgba(99, 102, 241, 0));
+  animation: floatGlow3 28s ease-in-out infinite alternate;
+}
+
+@keyframes floatGlow1 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(8vw, 12vh, 0) scale(1.15);
+  }
+}
+
+@keyframes floatGlow2 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(-10vw, -15vh, 0) scale(0.9);
+  }
+}
+
+@keyframes floatGlow3 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(-12vw, 10vh, 0) scale(1.2);
   }
 }

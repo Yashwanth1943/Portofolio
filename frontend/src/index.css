@@ -11,6 +11,11 @@
   --fs-h3: clamp(1.2rem, 1.2vw + 0.9rem, 1.6rem);
 }
 
+html,
+body {
+  background-color: #020008;
+}
+
 body {
   margin: 0;
   font-family: var(--font-sans);
