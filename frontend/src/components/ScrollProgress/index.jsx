@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import "./index.scss";
 
 const ScrollProgress = () => {
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const barRef = useRef(null);
 
   useEffect(() => {
     let ticking = false;
@@ -11,9 +11,9 @@ const ScrollProgress = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
           const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
-          if (totalScroll > 0) {
+          if (totalScroll > 0 && barRef.current) {
             const progress = (window.scrollY / totalScroll) * 100;
-            setScrollProgress(progress);
+            barRef.current.style.width = `${progress}%`;
           }
           ticking = false;
         });
@@ -27,8 +27,9 @@ const ScrollProgress = () => {
 
   return (
     <div 
+      ref={barRef}
       className="scroll-progress-bar" 
-      style={{ width: `${scrollProgress}%` }}
+      style={{ width: "0%" }}
       aria-hidden="true"
     />
   );

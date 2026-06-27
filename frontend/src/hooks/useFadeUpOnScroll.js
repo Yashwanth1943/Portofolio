@@ -1,14 +1,13 @@
 import { useEffect } from "react";
 
+/**
+ * Watches for .fade-up elements and animates them visible when they
+ * enter the viewport. Uses a MutationObserver so it catches sections
+ * that mount *after* Suspense resolves (lazy-loaded chunks).
+ */
 const useFadeUpOnScroll = (routeKey) => {
   useEffect(() => {
-    const elements = document.querySelectorAll(".fade-up");
-
-    if (!elements.length) {
-      return undefined;
-    }
-
-    const observer = new IntersectionObserver(
+    const intersectionObserver = new IntersectionObserver(
       (entries, obs) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
@@ -18,19 +17,45 @@ const useFadeUpOnScroll = (routeKey) => {
         });
       },
       {
-        threshold: 0.18,
-        rootMargin: "0px 0px -40px 0px",
+        threshold: 0.1,
+        rootMargin: "0px 0px -30px 0px",
       }
     );
 
-    elements.forEach((el) => {
-      if (el.classList.contains("visible")) {
-        return;
+    // Observe any .fade-up element that isn't already visible
+    const observeNew = (el) => {
+      if (!el.classList.contains("visible")) {
+        intersectionObserver.observe(el);
       }
-      observer.observe(el);
+    };
+
+    // Observe all currently mounted .fade-up elements
+    document.querySelectorAll(".fade-up").forEach(observeNew);
+
+    // Also observe any that mount later (lazy-loaded Suspense children)
+    const mutationObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+          if (!(node instanceof Element)) return;
+          // Check the node itself
+          if (node.classList.contains("fade-up")) {
+            observeNew(node);
+          }
+          // Check descendants
+          node.querySelectorAll(".fade-up").forEach(observeNew);
+        });
+      });
     });
 
-    return () => observer.disconnect();
+    mutationObserver.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+
+    return () => {
+      intersectionObserver.disconnect();
+      mutationObserver.disconnect();
+    };
   }, [routeKey]);
 };
 

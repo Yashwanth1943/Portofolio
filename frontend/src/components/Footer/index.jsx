@@ -58,4 +58,4 @@ const Footer = ({ scrollToSection }) => {
   );
 };
 
-export default Footer;
+export default React.memo(Footer);

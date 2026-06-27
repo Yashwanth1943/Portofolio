@@ -1,27 +1,27 @@
 import "./index.scss";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
 
 const Header = ({ activeSection, scrollToSection }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
+  const toggleMobileMenu = useCallback(() => {
+    setIsMobileMenuOpen((prev) => !prev);
+  }, []);
 
-  const closeMobileMenu = () => {
+  const closeMobileMenu = useCallback(() => {
     setIsMobileMenuOpen(false);
-  };
+  }, []);
 
-  const handleNavClick = (sectionId) => {
+  const handleNavClick = useCallback((sectionId) => {
     scrollToSection(sectionId);
     closeMobileMenu();
-  };
+  }, [scrollToSection, closeMobileMenu]);
 
-  const handleBrandClick = () => {
+  const handleBrandClick = useCallback(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     closeMobileMenu();
-  };
+  }, [closeMobileMenu]);
 
   // Scroll listener to toggle glassmorphic header style
   useEffect(() => {
@@ -98,4 +98,4 @@ const Header = ({ activeSection, scrollToSection }) => {
   );
 };
 
-export default Header;
+export default memo(Header);

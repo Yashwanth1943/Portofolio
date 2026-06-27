@@ -1,19 +1,22 @@
-import { useState, useEffect } from "react";
-import Home from "./components/Home";
-import Certificates from "./components/Certificates";
+import { useState, useEffect, useCallback, lazy, Suspense } from "react";
 import Header from "./components/Header";
 import AsideBar from "./components/AsideBar";
 import First5Seconds from "./components/First5Seconds";
-import Projects from "./components/Projects";
-import Skills from "./components/Skills";
-import About from "./components/About";
-import Education from "./components/Education";
-import Achievements from "./components/Achievements";
-import Contact from "./components/Contact";
-import Footer from "./components/Footer";
 import ScrollProgress from "./components/ScrollProgress";
+import SideRays from "./components/SideRays/SideRays";
 import useFadeUpOnScroll from "./hooks/useFadeUpOnScroll";
 import "./App.scss";
+
+// Lazy load section components for performance and code splitting
+const Home = lazy(() => import("./components/Home"));
+const About = lazy(() => import("./components/About"));
+const Skills = lazy(() => import("./components/Skills"));
+const Education = lazy(() => import("./components/Education"));
+const Projects = lazy(() => import("./components/Projects"));
+const Certificates = lazy(() => import("./components/Certificates"));
+const Achievements = lazy(() => import("./components/Achievements"));
+const Contact = lazy(() => import("./components/Contact"));
+const Footer = lazy(() => import("./components/Footer"));
 
 const App = () => {
   const [showSplash, setShowSplash] = useState(true);
@@ -28,38 +31,53 @@ const App = () => {
   }, []);
 
   // Highlight active section using Intersection Observer
+  // Uses MutationObserver too so lazy-mounted sections are caught
   useEffect(() => {
     if (showSplash) return;
 
-    const sections = document.querySelectorAll("section[id]");
     const observerOptions = {
       root: null,
-      rootMargin: "-25% 0px -55% 0px", // triggers when section dominates the viewport center
+      rootMargin: "-10% 0px -60% 0px",
       threshold: 0,
     };
 
-    const observerCallback = (entries) => {
+    const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           setActiveSection(entry.target.id);
         }
       });
+    }, observerOptions);
+
+    const observed = new Set();
+
+    const observeAll = () => {
+      document.querySelectorAll("section[id]").forEach((section) => {
+        if (!observed.has(section)) {
+          observer.observe(section);
+          observed.add(section);
+        }
+      });
     };
 
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
-    sections.forEach((section) => observer.observe(section));
+    observeAll();
+
+    // Re-observe when lazy sections mount
+    const mutObserver = new MutationObserver(observeAll);
+    mutObserver.observe(document.body, { childList: true, subtree: true });
 
     return () => {
-      sections.forEach((section) => observer.unobserve(section));
+      observer.disconnect();
+      mutObserver.disconnect();
     };
   }, [showSplash]);
 
-  const scrollToSection = (id) => {
+  const scrollToSection = useCallback((id) => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-  };
+  }, []);
 
   if (showSplash) {
     return <First5Seconds />;
@@ -67,6 +85,23 @@ const App = () => {
 
   return (
     <div className="app-container">
+      {/* Global SideRays — fixed, full-viewport, behind everything */}
+      <div className="app-side-rays" aria-hidden="true">
+        <SideRays
+          speed={1.6}
+          rayColor1="#a78bfa"
+          rayColor2="#38bdf8"
+          intensity={2.0}
+          spread={2.4}
+          origin="top-right"
+          tilt={-8}
+          saturation={1.5}
+          blend={0.6}
+          falloff={1.6}
+          opacity={0.75}
+        />
+      </div>
+
       {/* Background Energy Glows */}
       <div className="energy-glow blob-1" aria-hidden="true" />
       <div className="energy-glow blob-2" aria-hidden="true" />
@@ -86,40 +121,44 @@ const App = () => {
       />
 
       <main className="app-main">
-        <section id="hero">
-          <Home />
-        </section>
+        <Suspense fallback={<div style={{ minHeight: "100px" }} />}>
+          <section id="hero">
+            <Home />
+          </section>
 
-        <section id="about" className="fade-up">
-          <About />
-        </section>
+          <section id="about" className="fade-up">
+            <About />
+          </section>
 
-        <section id="skills" className="fade-up">
-          <Skills />
-        </section>
+          <section id="skills" className="fade-up">
+            <Skills />
+          </section>
 
-        <section id="education" className="fade-up">
-          <Education />
-        </section>
+          <section id="education" className="fade-up">
+            <Education />
+          </section>
 
-        <section id="projects" className="fade-up">
-          <Projects />
-        </section>
+          <section id="projects" className="fade-up">
+            <Projects />
+          </section>
 
-        <section id="certifications" className="fade-up">
-          <Certificates />
-        </section>
+          <section id="certifications" className="fade-up">
+            <Certificates />
+          </section>
 
-        <section id="achievements" className="fade-up">
-          <Achievements />
-        </section>
+          <section id="achievements" className="fade-up">
+            <Achievements />
+          </section>
 
-        <section id="contact" className="fade-up">
-          <Contact />
-        </section>
+          <section id="contact" className="fade-up">
+            <Contact />
+          </section>
+        </Suspense>
       </main>
 
-      <Footer scrollToSection={scrollToSection} />
+      <Suspense fallback={null}>
+        <Footer scrollToSection={scrollToSection} />
+      </Suspense>
     </div>
   );
 };

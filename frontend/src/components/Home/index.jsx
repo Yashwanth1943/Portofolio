@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { NavLink } from 'react-router-dom';
+import ProfileCard from "./ProfileCard";
 import './index.scss';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const HomePage = () => {
-  const [photoLoaded, setPhotoLoaded] = useState(true);
   const heroRef = useRef(null);
   const heroPhotoRef = useRef(null);
 
@@ -42,6 +42,8 @@ const HomePage = () => {
     <div className="home-container">
       <div className="home-sections">
         <section ref={heroRef} className="hero-section">
+
+          {/* Hero content */}
           <div className="hero-layout">
             <div className="hero-copy">
               <p className="hero-kicker">FULL-STACK DEVELOPER</p>
@@ -74,33 +76,34 @@ const HomePage = () => {
               </div>
             </div>
 
-            <figure
+            <div
               ref={heroPhotoRef}
-              className="hero-photo-frame"
-              aria-label="Yashwanth profile photo"
+              className="hero-photo-container"
             >
-              {photoLoaded ? (
-                <img
-                  className="hero-photo"
-                  src={process.env.PUBLIC_URL + "/profile.jpg"}
-                  alt="Yashwanth portrait"
-                  width="800"
-                  height="800"
-                  loading="eager"
-                  decoding="async"
-                  fetchPriority="high"
-                  sizes="(min-width: 1024px) 300px, (min-width: 768px) 32vw, 54vw"
-                  onError={() => setPhotoLoaded(false)}
-                />
-              ) : (
-                <div className="hero-photo-fallback" aria-hidden="true">YS</div>
-              )}
-            </figure>
+              <ProfileCard
+                name="Yashwanth Kosuri"
+                title="Full Stack Developer"
+                handle="yashwanth_kosuri"
+                status="Available for Work"
+                contactText="Contact Me"
+                avatarUrl={import.meta.env.BASE_URL + "profile.png"}
+                showUserInfo={true}
+                enableTilt={true}
+                enableMobileTilt={true}
+                onContactClick={() => {
+                  document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+                }}
+                behindGlowEnabled={false}
+                innerGradient="linear-gradient(145deg, rgba(30, 20, 50, 0.8) 0%, rgba(56, 189, 248, 0.2) 100%)"
+              />
+            </div>
           </div>
+
         </section>
       </div>
     </div>
   );
 };
+
 
 export default HomePage;

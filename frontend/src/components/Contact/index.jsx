@@ -16,8 +16,8 @@ const Contact = () => {
   const [serverState, setServerState] = useState("checking");
 
   const API_BASE = (
-    process.env.REACT_APP_API_BASE ||
-    process.env.REACT_APP_API_URL ||
+    import.meta.env.VITE_API_BASE ||
+    import.meta.env.VITE_API_URL ||
     (window.location.hostname === "localhost"
       ? "http://localhost:5000"
       : "https://portofolio-1-1kys.onrender.com")

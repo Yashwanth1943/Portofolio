@@ -9,13 +9,31 @@ body {
   width: 100%;
   min-height: 100%;
   overflow-x: hidden;
-  background-color: #020008;
-  background: 
-    radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.18) 0%, transparent 40%),
-    radial-gradient(circle at 85% 45%, rgba(168, 85, 247, 0.15) 0%, transparent 45%),
-    radial-gradient(circle at 20% 75%, rgba(56, 189, 248, 0.15) 0%, transparent 45%),
-    radial-gradient(circle at 80% 85%, rgba(236, 72, 153, 0.12) 0%, transparent 40%),
-    radial-gradient(at top, #14083a, #060412, #020008) fixed;
+  background-color: #03000d;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  background:
+    /* top-left violet aurora */
+    radial-gradient(ellipse 70% 55% at 8% 10%,  rgba(109, 40, 217, 0.28) 0%, transparent 60%),
+    /* top-right cyan bloom */
+    radial-gradient(ellipse 55% 45% at 92% 5%,  rgba(6, 182, 212, 0.22) 0%, transparent 55%),
+    /* centre-left indigo wash */
+    radial-gradient(ellipse 60% 60% at 0% 50%,  rgba(79, 70, 229, 0.14) 0%, transparent 65%),
+    /* centre-right magenta glow */
+    radial-gradient(ellipse 50% 50% at 100% 45%, rgba(217, 70, 239, 0.16) 0%, transparent 55%),
+    /* bottom-left emerald accent */
+    radial-gradient(ellipse 45% 40% at 15% 90%,  rgba(16, 185, 129, 0.12) 0%, transparent 55%),
+    /* bottom-right rose accent */
+    radial-gradient(ellipse 55% 45% at 85% 95%,  rgba(244, 63, 94, 0.13) 0%, transparent 55%),
+    /* base gradient */
+    linear-gradient(160deg, #0d0520 0%, #050112 45%, #020009 100%);
+  pointer-events: none;
+  transform: translate3d(0, 0, 0);
 }
 
 * {
@@ -23,21 +41,45 @@ body {
 }
 
 .app-container {
+  position: relative;
+  z-index: 1;   /* above the fixed SideRays canvas (z-index: 0) */
   width: 100%;
   min-height: 100vh;
 }
 
+/* Global SideRays canvas — fixed full-viewport, above bg gradient, below UI */
+.app-side-rays {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;          /* above body::before (-10) and energy glows (-1) */
+  pointer-events: none;
+  isolation: isolate;  /* own compositing layer */
+}
 
 
 section[id] {
-  scroll-margin-top: clamp(80px, 8vw, 105px);
+  scroll-margin-top: clamp(72px, 8vw, 105px);
   width: 100%;
   max-width: 1120px;
   margin: 0 auto;
-  padding: clamp(32px, 4vw, 56px) clamp(16px, 4vw, 32px);
+  /* Desktop: extra left padding for sidebar (60px sidebar + 20px gap) */
+  padding: clamp(40px, 5vw, 64px) clamp(16px, 4vw, 32px);
+
+  @media (max-width: 992px) {
+    /* Tablet: sidebar hidden, balanced padding */
+    padding: clamp(32px, 4vw, 48px) clamp(16px, 4vw, 28px);
+  }
 
   @media (max-width: 768px) {
-    padding: clamp(16px, 3vw, 32px) clamp(12px, 3vw, 20px);
+    scroll-margin-top: 80px;
+    padding: 28px 16px;
+  }
+
+  @media (max-width: 480px) {
+    scroll-margin-top: 72px;
+    padding: 20px 12px;
   }
 }
 
@@ -124,12 +166,10 @@ section[id] {
 .energy-glow {
   position: fixed;
   border-radius: 50%;
-  filter: blur(120px);
   z-index: -1;
   pointer-events: none;
-  opacity: 0.14;
-  mix-blend-mode: screen;
   will-change: transform;
+  contain: paint style; /* Isolate repaint to this element's layer */
 }
 
 .blob-1 {
@@ -137,7 +177,7 @@ section[id] {
   left: -10%;
   width: 50vw;
   height: 50vw;
-  background: radial-gradient(circle, rgba(129, 140, 248, 0.8), rgba(167, 139, 250, 0));
+  background: radial-gradient(circle, rgba(129, 140, 248, 0.12) 0%, rgba(167, 139, 250, 0.04) 50%, rgba(167, 139, 250, 0) 100%);
   animation: floatGlow1 25s ease-in-out infinite alternate;
 }
 
@@ -146,7 +186,7 @@ section[id] {
   right: -10%;
   width: 60vw;
   height: 60vw;
-  background: radial-gradient(circle, rgba(236, 72, 153, 0.8), rgba(244, 63, 94, 0));
+  background: radial-gradient(circle, rgba(236, 72, 153, 0.11) 0%, rgba(244, 63, 94, 0.03) 50%, rgba(244, 63, 94, 0) 100%);
   animation: floatGlow2 30s ease-in-out infinite alternate;
 }
 
@@ -155,7 +195,7 @@ section[id] {
   left: 60%;
   width: 45vw;
   height: 45vw;
-  background: radial-gradient(circle, rgba(56, 189, 248, 0.8), rgba(99, 102, 241, 0));
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.11) 0%, rgba(99, 102, 241, 0.03) 50%, rgba(99, 102, 241, 0) 100%);
   animation: floatGlow3 28s ease-in-out infinite alternate;
 }
 

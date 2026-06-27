@@ -1,3 +1,4 @@
+import { memo } from "react";
 import "./index.scss";
 import { 
   FaHome, 
@@ -12,17 +13,18 @@ import {
   FaGithub 
 } from "react-icons/fa";
 
+const navItems = [
+  { id: "hero", label: "Home", icon: <FaHome /> },
+  { id: "about", label: "About", icon: <FaUser /> },
+  { id: "skills", label: "Skills", icon: <FaCode /> },
+  { id: "education", label: "Education", icon: <FaGraduationCap /> },
+  { id: "projects", label: "Projects", icon: <FaLaptopCode /> },
+  { id: "certifications", label: "Certificates", icon: <FaCertificate /> },
+  { id: "achievements", label: "Achievements", icon: <FaTrophy /> },
+  { id: "contact", label: "Contact", icon: <FaEnvelope /> },
+];
+
 const AsideBar = ({ activeSection, scrollToSection }) => {
-  const navItems = [
-    { id: "hero", label: "Home", icon: <FaHome /> },
-    { id: "about", label: "About", icon: <FaUser /> },
-    { id: "skills", label: "Skills", icon: <FaCode /> },
-    { id: "education", label: "Education", icon: <FaGraduationCap /> },
-    { id: "projects", label: "Projects", icon: <FaLaptopCode /> },
-    { id: "certifications", label: "Certificates", icon: <FaCertificate /> },
-    { id: "achievements", label: "Achievements", icon: <FaTrophy /> },
-    { id: "contact", label: "Contact", icon: <FaEnvelope /> },
-  ];
 
   return (
     <aside className="aside-bar" aria-label="Section shortcuts">
@@ -71,4 +73,4 @@ const AsideBar = ({ activeSection, scrollToSection }) => {
   );
 };
 
-export default AsideBar;
+export default memo(AsideBar);

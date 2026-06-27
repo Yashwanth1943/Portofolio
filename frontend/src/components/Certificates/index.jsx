@@ -11,7 +11,9 @@ const withPublicUrl = (src) => {
     return src;
   }
 
-  return `${process.env.PUBLIC_URL || ""}${src}`;
+  const base = (import.meta.env.BASE_URL || "").replace(/\/$/, "");
+  const path = src.startsWith("/") ? src : `/${src}`;
+  return `${base}${path}`;
 };
 
 const certificatesData = [

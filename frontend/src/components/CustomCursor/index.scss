@@ -11,6 +11,7 @@
   z-index: 2000;
   transform: translate3d(var(--cursor-x), var(--cursor-y), 0) scale(var(--cursor-scale));
   mix-blend-mode: screen;
+  will-change: transform;
 }
 
 .cursor-ring {
